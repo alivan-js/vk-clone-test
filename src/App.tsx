@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {Navigate, Route, Routes} from 'react-router-dom';
+import './App.scss';
+import Chat from './components/chat/Chat';
+import Layout from "./components/Layout";
+import Profile from './components/profile/Profile';
+import Users from "./components/users/Users";
+import {useSelector} from "react-redux";
+import { RootState } from './redux/store';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+
+    const id = useSelector((state: RootState) => state.auth.userData.id)
+
+    return (
+        <>
+            <Routes>
+                {/*<Route path={"/login"} element={<Login/>}/>*/}
+                <Route path={"/"} element={<Layout/>}>
+                    <Route path={"/chat"} element={<Chat/>}/>
+                    <Route path={"/profile"} element={<Navigate to={"/profile/" + id}/>}/>
+                    {/*Правильно ли такой редирект делать?*/}
+                    <Route path={"/profile/:id"} element={<Profile/>}/>
+                    <Route path={"/users"} element={<Users/>}/>
+                </Route>
+            </Routes>
+        </>
+    );
 }
 
 export default App;
