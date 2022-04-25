@@ -1,0 +1,108 @@
+.content {
+  margin: 0 auto;
+  background-color: white;
+  width: 1110px;
+  padding: 45px 50px;
+}
+
+.header {
+  font-size: 36px;
+  line-height: 41px;
+  text-align: center;
+  color: #000000;
+  margin-bottom: 50px;
+}
+
+.message {
+  background: #EDEEF0;
+  border: 1px solid #DCE1E6;
+  padding: 31px 40px;
+  font-size: 24px;
+  line-height: 28px;
+  color: #000000;
+  margin-bottom: 42px;
+}
+
+.form {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+
+
+
+}
+
+
+.input {
+  height: 50px;
+  width: 100%;
+  border: 1px solid #DCE1E6;
+  border-radius: 5px;
+  padding: 13px 20px;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  color: #8A94A0;
+  margin-bottom: 20px;
+}
+
+.button_login {
+  height: 55px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5181B8;
+  border-radius: 10px;
+  padding: 0 45px;
+
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.button_register {
+  height: 55px;
+  padding: 0 45px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4BB34B;
+}
+
+.checkbox {
+  input {
+    width: 23px;
+    height: 23px;
+    border: 2px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+
+  label {
+    margin-left: 10px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+    color: #000000;
+  }
+
+}
+
+.main{
+  width: 100%;
+  height: 100%;
+  padding-top: 120px;
+}

@@ -5,6 +5,7 @@ import Post from "./Post";
 import {addPost, fetchUserData} from "../../redux/reducers/profile";
 import s from "./Profile.module.scss"
 import {useParams} from "react-router-dom";
+import {WithAuthRedirect} from "../HOC/withAuthRedirect";
 
 
 let userAvatar = require("./../../assets/Rectangle 12.png")
@@ -87,4 +88,4 @@ const Profile = () => {
     );
 }
 
-export default Profile;
+export default WithAuthRedirect(Profile)
