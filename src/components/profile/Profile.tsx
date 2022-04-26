@@ -1,12 +1,12 @@
-import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../redux/store";
+import React, {ChangeEvent, KeyboardEvent, useCallback, useEffect, useState} from 'react';
+import {useDispatch} from "react-redux";
 import Post from "./Post";
-import {addPost, fetchUserData} from "../../redux/reducers/profile";
+import {addPost, changeStatusTC, fetchUserData} from "../../redux/reducers/profile";
 import s from "./Profile.module.scss"
 import {useParams} from "react-router-dom";
 import {WithAuthRedirect} from "../HOC/withAuthRedirect";
-
+import EditableSpan from "../EditableSpan";
+import {useAppSelector} from "../../redux/store";
 
 let userAvatar = require("./../../assets/Rectangle 12.png")
 let emptyCard = require("./../../assets/img/emptycard.png")
@@ -15,19 +15,20 @@ const Profile = () => {
 
     const params = useParams<"id">()
 
-    const posts = useSelector((state: RootState) => state.profile.posts)
-    const profile = useSelector((state: RootState) => state.profile.profile)
+    const profile = useAppSelector(state=> state.profile)
     const dispatch = useDispatch()
 
     const [postText, setPostText] = useState("")
 
+    const updateStatusCallback = useCallback( (status: string) => {
+        dispatch(changeStatusTC(status))
+    }, [dispatch])
 
     useEffect(() => {
         if (params.id !== undefined) {
             dispatch(fetchUserData(params.id))
         }
-
-    }, [])
+    }, [params.id])
 
     const onChangePostHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setPostText(e.currentTarget.value)
@@ -44,7 +45,7 @@ const Profile = () => {
         <div className={s.content}>
             <div className={s.first__column}>
                 <div className={s.first__column__info}>
-                    <img src={profile?.photos?.large || userAvatar} alt=""/>
+                    <img src={profile.userInfo?.photos?.large || userAvatar} alt=""/>
                     <button>Редактировать</button>
                 </div>
             </div>
@@ -52,8 +53,8 @@ const Profile = () => {
                 <div className={s.description}>
                     <div className={s.description__body}>
                         <div>
-                            <div className={s.description__name}>{profile.fullName}</div>
-                            <div className={s.description__status}> установить статус</div>
+                            <div className={s.description__name}>{profile.userInfo.fullName}</div>
+                                <div className={s.description__status}><EditableSpan text={profile.status || "Установить статус"} changeText={updateStatusCallback}/></div>
                         </div>
                         <div className={s.description__status}>online</div>
                     </div>
@@ -75,12 +76,12 @@ const Profile = () => {
                            placeholder="Что у вас нового?"/>
                 </div>
                 <div>
-                    <div className={s.posts__header}>{posts.length ? "Мои записи" : "Нет записей"}</div>
+                    <div className={s.posts__header}>{profile.posts.length ? "Мои записи" : "Нет записей"}</div>
                     <div>
-                        {!posts.length
+                        {!profile.posts.length
                             ? <div className={s.empty__posts}><img src={emptyCard} alt=""/>
                                 <span>На стене нет пока ни одной записи</span></div>
-                            : posts.map(el => <Post id={el.id} key={el.id} text={el.text} likesCount={el.likesCount}/>)}
+                            : profile.posts.map(el => <Post id={el.id} key={el.id} text={el.text} likesCount={el.likesCount}/>)}
                     </div>
                 </div>
             </div>

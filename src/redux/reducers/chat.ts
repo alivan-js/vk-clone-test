@@ -1,28 +1,6 @@
-type InitialStateProps = {
-    messages: Array<MessageType>
-}
-
-export interface MessageType {
-    id: number
-    text: string,
-    name?: string,
-    img?: string,
-    date?: string
-}
-
-const initialState: InitialStateProps = {
-    messages: [
-        {id: 1, text: "hdslfjdslkjfsldfjsldkjflkdsjflkdsfj"},
-        {id: 2, text: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
-        {id: 3, text: "Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
-    ]
-}
-
-type ActionTypes = ReturnType<typeof addMessage>
-
-export function chat(state = initialState, action: ActionTypes) {
+export function chatReducer(state: InitialStateType = {messages: []}, action: ChatActionsType): InitialStateType {
     switch (action.type) {
-        case "ADD_MESSAGE": {
+        case "CHAT/MESSAGE-ADDED": {
             return {...state, messages: [...state.messages, {id: state.messages.length + 1, text: action.payload}]}
         }
         default:
@@ -30,7 +8,22 @@ export function chat(state = initialState, action: ActionTypes) {
     }
 }
 
-export const addMessage = (payload: string) => ({
-    type: "ADD_MESSAGE",
-    payload
-}) as const
+// actions
+
+export const addMessage = (payload: string) => ({type: "CHAT/MESSAGE-ADDED", payload}) as const
+
+// types
+
+type InitialStateType = {
+    messages: Array<MessageType>
+}
+
+export type MessageType = {
+    id: number
+    text: string,
+    name?: string,
+    img?: string,
+    date?: string
+}
+
+export type ChatActionsType = ReturnType<typeof addMessage>

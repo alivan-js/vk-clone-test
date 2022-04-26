@@ -6,7 +6,7 @@ type MessageType = {
     text: string
 }
 
-const Message: FC<MessageType> = ({text}) => {
+const Message: FC<MessageType> = React.memo(({text}) => {
     return (
         <div className={"message"}>
             <div><img className={"header__user_avatar"} src={userAvatar} alt=""/></div>
@@ -18,6 +18,6 @@ const Message: FC<MessageType> = ({text}) => {
             </div>
         </div>
     );
-};
+})
 
 export default Message;

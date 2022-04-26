@@ -1,21 +1,33 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux'
-import { auth } from './reducers/auth'
-import { chat } from './reducers/chat'
-import { profile } from './reducers/profile'
-import { users } from './reducers/users'
-import thunkMiddleware from 'redux-thunk'
+import {AuthActionsType, authReducer} from './reducers/auth'
+import {ChatActionsType, chatReducer} from './reducers/chat'
+import {ProfileActionsType, profileReducer} from './reducers/profile'
+import {UsersActionsType, usersReducer} from './reducers/users'
+import thunk, {ThunkAction} from 'redux-thunk'
+import {TypedUseSelectorHook, useSelector} from 'react-redux'
+import {AppActionsType, appReducer} from './reducers/app'
 
 const rootReducer = combineReducers({
-    chat,
-    profile,
-    users,
-    auth
+    chat: chatReducer,
+    profile: profileReducer,
+    users: usersReducer,
+    auth: authReducer,
+    app: appReducer
 })
 
+export const store = createStore(rootReducer, applyMiddleware(thunk))
 
+export type RootStateType = ReturnType<typeof rootReducer>
+export type RootAppActionsType = AuthActionsType | ChatActionsType | ProfileActionsType | UsersActionsType | AppActionsType
 
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType,
+    RootStateType,
+    unknown,
+    RootAppActionsType>
 
-export let store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
+export const useAppSelector: TypedUseSelectorHook<RootStateType> = useSelector
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type Nullable<T> = null | T
+
+//@ts-ignore
+window.store = store

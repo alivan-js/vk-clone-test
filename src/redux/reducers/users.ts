@@ -1,129 +1,72 @@
-import {Dispatch} from "redux";
-import {usersAPI} from "../../utils/api";
+import {UserInListType, usersAPI} from "../../utils/api";
+import {AppThunk, Nullable} from "../store";
 
-type InitialStateProps = {
-    users: Array<UsersType>
-    page: number
-    totalPage: number
-    isFetchingUsers: boolean
-    isFollowingInProgress: {
-        status: boolean,
-        id: number | null
-    }
-}
-
-export interface UsersType {
-    id: number
-    name: string
-    followed: boolean
-    photos: {
-        small: string | null,
-        large: string | null
-    }
-}
-
-const initialState: InitialStateProps = {
-    users: [],
+const initialState = {
+    users: [] as Array<UserInListType>,
     isFetchingUsers: false,
     isFollowingInProgress: {
         status: false,
-        id: null
+        id: null as Nullable<number>
     },
     page: 1,
-    totalPage: 1
+    totalPage: 1,
 }
 
-type ActionTypes =
-    ReturnType<typeof addUsers>
-    | ReturnType<typeof followUser>
-    | ReturnType<typeof setFollowingProgress>
-    | ReturnType<typeof setTotalNumber>
-    | ReturnType<typeof setPage>
-    | ReturnType<typeof setFetchingUsers>
-
-export function users(state = initialState, action: ActionTypes) {
+export function usersReducer(state = initialState, action: UsersActionsType): InitialStateType {
     switch (action.type) {
-        case "USERS-ADDED": {
+        case "USERS/USERS-ADDED": {
             return {
-                // @ts-ignore
                 ...state, users: [...state.users, ...action.payload]
             }
         }
-        case "USER-FOLLOWED-TOGGLE": {
+        case "USERS/USER-FOLLOWED-TOGGLED": {
             return {
                 ...state,
                 users: state.users.map(el => el.id === action.payload ? {...el, followed: !el.followed} : el)
             }
         }
-        case "FETCHING_USERS_SET": {
-            return {
-                ...state,
-                isFetchingUsers: action.payload
-            }
+        case "USERS/FETCHING-USERS-SET": {
+            return {...state, isFetchingUsers: action.payload}
         }
-        case "FOLLOWING_PROGRESS_SET": {
+        case "USERS/FOLLOWING-PROGRESS-SET": {
             return {
-                ...state,
-                isFollowingInProgress: {
-                    status: action.payload.status,
-                    id: action.payload.id
+                ...state, isFollowingInProgress: {
+                    status: action.payload.status, id: action.payload.id
                 }
             }
         }
-        case "TOTAL_NUMBER_SET": {
+        case "USERS/TOTAL-NUMBER-SET": {
             return {
-                ...state,
-                totalPage: action.payload
+                ...state, totalPage: action.payload
             }
         }
-        case "PAGE_SET": {
+        case "USERS/PAGE-SET": {
             return {
-                ...state,
-                page: action.payload
+                ...state, page: action.payload
             }
+        }
+        case "USERS/USERS-CLEARED": {
+            return {...state, users: []}
         }
         default:
             return state
     }
 }
 
-export const addUsers = (payload: UsersType) => ({
-    type: "USERS-ADDED",
-    payload
-}) as const
+// actions
 
-export const followUser = (payload: any) => ({
-    type: "USER-FOLLOWED-TOGGLE",
-    payload
-}) as const
+export const addUsers = (payload: UserInListType[]) => ({type: "USERS/USERS-ADDED", payload}) as const
+export const followUser = (payload: any) => ({type: "USERS/USER-FOLLOWED-TOGGLED", payload}) as const
+export const setFollowingProgress = (payload: { status: boolean, id: number | null }) =>
+    ({type: "USERS/FOLLOWING-PROGRESS-SET", payload}) as const
+export const setFetchingUsers = (payload: boolean) => ({type: "USERS/FETCHING-USERS-SET", payload}) as const
+export const setTotalNumber = (payload: number) => ({type: "USERS/TOTAL-NUMBER-SET", payload}) as const
+export const setPage = (payload: number) => ({type: "USERS/PAGE-SET", payload}) as const
+export const clearUsers = () => ({type: "USERS/USERS-CLEARED"}) as const
 
-export const setFollowingProgress = (payload: {
-                                         status: boolean,
-                                         id: number | null
-                                     }
-) =>
-    ({
-        type: "FOLLOWING_PROGRESS_SET",
-        payload
-    }) as const
+// thunks
 
-export const setFetchingUsers = (payload: boolean) => ({
-    type: "FETCHING_USERS_SET",
-    payload
-}) as const
-
-export const setTotalNumber = (payload: number) => ({
-    type: "TOTAL_NUMBER_SET",
-    payload
-}) as const
-
-export const setPage = (payload: number) => ({
-    type: "PAGE_SET",
-    payload
-}) as const
-
-
-export const fetchUsers = (page: number) => async (dispatch: Dispatch) => {
+export const fetchUsers = (page: number): AppThunk => async (dispatch) => {
     dispatch(setFetchingUsers(true))
     const data = await usersAPI.getUsers(page)
     dispatch(setTotalNumber(data.totalCount))
@@ -131,19 +74,29 @@ export const fetchUsers = (page: number) => async (dispatch: Dispatch) => {
     dispatch(setFetchingUsers(false))
 }
 
-export const fetchFollowing = (id: number) => async (dispatch: Dispatch) => {
+export const fetchFollowing = (id: number): AppThunk => async (dispatch) => {
     dispatch(setFollowingProgress({status: true, id}))
     await usersAPI.follow(id)
     dispatch(followUser(id))
     dispatch(setFollowingProgress({status: true, id: null}))
 }
 
-
-export const fetchUnfollowing = (id: number) => async (dispatch: Dispatch) => {
+export const fetchUnfollowing = (id: number): AppThunk => async (dispatch) => {
     dispatch(setFollowingProgress({status: true, id}))
     await usersAPI.unfollow(id)
     dispatch(followUser(id))
     dispatch(setFollowingProgress({status: true, id: null}))
 }
 
+// types
 
+type InitialStateType = typeof initialState
+
+export type UsersActionsType =
+    ReturnType<typeof addUsers>
+    | ReturnType<typeof followUser>
+    | ReturnType<typeof setFollowingProgress>
+    | ReturnType<typeof setTotalNumber>
+    | ReturnType<typeof setPage>
+    | ReturnType<typeof setFetchingUsers>
+    | ReturnType<typeof clearUsers>

@@ -1,9 +1,45 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import s from "./Login.module.scss"
 import Header from "../header/Header";
+import {useForm} from 'react-hook-form';
+import {ErrorMessage} from '@hookform/error-message';
+import {LoginParamsType} from "../../utils/api";
+import {useDispatch} from "react-redux";
+import {useAppSelector} from "../../redux/store";
+import {Navigate} from 'react-router-dom';
+import {authTC, loginTC} from "../../redux/reducers/auth";
 
 
 const Login = () => {
+
+    const dispatch = useDispatch()
+    const isLogin = useAppSelector(state => state.auth.isLogin)
+
+
+    useEffect(() => {
+            dispatch(authTC())
+        },
+        [])
+
+
+    const {
+        register,
+        formState: {errors},
+        handleSubmit
+    } = useForm<LoginParamsType>({
+        criteriaMode: "all",
+        mode: 'onTouched'
+    });
+
+    const onSubmit = handleSubmit(data => {
+            dispatch(loginTC(data))
+        }
+    );
+
+    if (isLogin) {
+        return <Navigate to={"/"}/>
+    }
+
     return (
         <>
             <Header/>
@@ -12,17 +48,54 @@ const Login = () => {
                     <div className={s.content}>
                         <div className={s.header}>Вход Насвязи</div>
                         <div className={s.message}>Чтобы просмотреть эту страницу, нужно зайти на сайт.</div>
-                        <form action="submit" className={s.form}>
-                            <input type="text" placeholder={"Телефон или email"} className={s.input}/>
-                            <input type="password" placeholder={"Пароль"} className={s.input}/>
+                        <form onSubmit={onSubmit} className={s.form}>
+                            <input
+                                placeholder={"Email"} className={s.input}
+                                {...register("email", {
+                                    required: "Email is required",
+                                    pattern: {
+                                        value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                        message: "Incorrect email"
+                                    }
+                                })}
+                            />
+                            <ErrorMessage
+                                errors={errors}
+                                name="email"
+                                render={({messages}) => {
+                                    return messages
+                                        ? Object.entries(messages).map(([type, message]) => (
+                                            <p key={type} style={{color: "red"}}>{message}</p>
+                                        ))
+                                        : null;
+                                }}
+                            />
+                            <input
+                                placeholder={"Password"} className={s.input} type={"password"}
+                                {...register("password", {
+                                    required: "Password is required",
+                                    minLength: {
+                                        value: 6,
+                                        message: "Password must exceed 5 characters"
+                                    }
+                                })}
+                            />
+                            <ErrorMessage
+                                errors={errors}
+                                name="password"
+                                render={({messages}) => {
+                                    return messages
+                                        ? Object.entries(messages).map(([type, message]) => (
+                                            <p key={type} style={{color: "red"}}>{message}</p>
+                                        ))
+                                        : null;
+                                }}
+                            />
                             <div className={s.checkbox}>
-                                <input type="checkbox" id="reminder"/>
-                                <label htmlFor="reminder">Чужой компьютер</label>
+                                <input {...register("rememberMe")} type="checkbox" id="reminder"/>
+                                <label htmlFor="reminder">Remember me</label>
                             </div>
-                            <div className={s.buttons}>
-                                <button className={s.button_login}>Войти</button>
-                                <button className={s.button_register}>Регистрация</button>
-                            </div>
+                            <button className={s.button_login}>Войти</button>
                         </form>
                     </div>
                 </main>

@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import s from "./Users.module.scss";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {fetchFollowing, fetchUnfollowing} from "../../redux/reducers/users";
 import {NavLink} from "react-router-dom";
-import {RootState} from "../../redux/store";
+import {useAppSelector} from "../../redux/store";
 
 type UserType = {
     id: number
@@ -12,10 +12,10 @@ type UserType = {
     isFollowed: boolean
 }
 
-const User: FC<UserType> = ({img, name, isFollowed, id}) => {
+const User: FC<UserType> = React.memo(({img, name, isFollowed, id}) => {
 
     const dispatch = useDispatch()
-    const isLoading = useSelector((state: RootState) => state.users.isFollowingInProgress)
+    const isLoading = useAppSelector(state => state.users.isFollowingInProgress)
 
     const onClickFollowHandler = () => {
         dispatch(fetchFollowing(id))
@@ -42,6 +42,6 @@ const User: FC<UserType> = ({img, name, isFollowed, id}) => {
             </div>
         </div>
     );
-};
+})
 
 export default User;

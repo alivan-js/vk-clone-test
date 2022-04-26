@@ -11,7 +11,7 @@ type PostType = {
     id: number
 }
 
-const Post: FC<PostType> = ({text, likesCount, id}) => {
+const Post: FC<PostType> = React.memo(({text, likesCount, id}) => {
 
     const [clicked, setClicked] = useState(false)
 
@@ -44,6 +44,6 @@ const Post: FC<PostType> = ({text, likesCount, id}) => {
             </div>
         </div>
     );
-};
+})
 
 export default Post;

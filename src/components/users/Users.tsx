@@ -1,25 +1,33 @@
 import React, {useEffect, useRef, MutableRefObject} from 'react';
 import s from "./Users.module.scss"
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../redux/store";
+import {useDispatch} from "react-redux";
+import {useAppSelector} from "../../redux/store";
 import User from './User';
-import {fetchUsers, setPage} from "../../redux/reducers/users";
+import {clearUsers, fetchUsers, setPage} from "../../redux/reducers/users";
 import Loader from '../loader/Loader';
+import {WithAuthRedirect} from "../HOC/withAuthRedirect";
+import {compose} from 'redux';
 
 const Users = () => {
 
     const lastElement = useRef() as MutableRefObject<HTMLInputElement>
     const observer = useRef()
 
-    const totalPage = useSelector((state: RootState) => state.users.totalPage)
-    const page = useSelector((state: RootState) => state.users.page)
-    const users = useSelector((state: RootState) => state.users.users)
-    const isLoading = useSelector((state: RootState) => state.users.isFetchingUsers)
+    const page = useAppSelector(state => state.users.page)
+    const totalPage = useAppSelector(state => state.users.totalPage)
+    const users = useAppSelector(state => state.users.users)
+    const isLoading = useAppSelector(state => state.users.isFetchingUsers)
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(fetchUsers(page))
     }, [page])
+
+    useEffect(() => {
+        return () => {
+            dispatch(clearUsers())
+        }
+    }, [])
 
     useEffect(() => {
         // @ts-ignore
@@ -35,6 +43,8 @@ const Users = () => {
         // @ts-ignore
         observer.current.observe(lastElement.current)
     }, [isLoading])
+
+    // Правильная типизация?
 
     return (
         <div className={s.content}>
@@ -54,4 +64,4 @@ const Users = () => {
     );
 };
 
-export default Users;
+export default compose(WithAuthRedirect)(Users)

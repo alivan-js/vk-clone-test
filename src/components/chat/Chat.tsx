@@ -1,8 +1,9 @@
 import React, {ChangeEvent, MouseEvent, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import Message from "./Message";
-import {RootState} from "../../redux/store";
 import {addMessage} from '../../redux/reducers/chat';
+import {WithAuthRedirect} from "../HOC/withAuthRedirect";
+import {useAppSelector} from "../../redux/store";
 
 let arrow = require("./../../assets/arrow.png")
 let bigArrow = require("./../../assets/bigArrow.png")
@@ -10,7 +11,7 @@ let bigArrow = require("./../../assets/bigArrow.png")
 const Chat = () => {
 
     const dispatch = useDispatch()
-    const messages = useSelector((state: RootState) => state.chat.messages)
+    const messages = useAppSelector(state => state.chat.messages)
     const [message, setMessage] = useState<string>("")
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,4 +54,4 @@ const Chat = () => {
     );
 };
 
-export default Chat;
+export default WithAuthRedirect(Chat)
