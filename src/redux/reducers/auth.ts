@@ -7,7 +7,9 @@ const initialState = {
         id: null as Nullable<number>,
         email: null as Nullable<string>,
         login: null as Nullable<string>
-    }
+    },
+    captcha: null as Nullable<string>
+
 }
 
 export function authReducer(state = initialState, action: AuthActionsType): InitialStateType {
@@ -21,6 +23,9 @@ export function authReducer(state = initialState, action: AuthActionsType): Init
         case "AUTH/IS-LOGGED-OUT-SET": {
             return {...state, isLogin: false, userData: {id: null, email: null, login: null}}
         }
+        case "AUTH/CAPTCHA-SET": {
+            return {...state, captcha: action.url}
+        }
         default:
             return state
     }
@@ -31,6 +36,7 @@ export function authReducer(state = initialState, action: AuthActionsType): Init
 export const setUserData = (payload: any) => ({type: "AUTH/USERDATA-SET", payload}) as const
 export const setIsLoggedIn = () => ({type: "AUTH/IS-LOGGED-IN-SET"}) as const
 export const setIsLoggedOut = () => ({type: "AUTH/IS-LOGGED-OUT-SET"}) as const
+export const setCaptcha = (url: string) => ({type: "AUTH/CAPTCHA-SET", url}) as const
 
 // thunks
 
@@ -39,8 +45,8 @@ export const loginTC = (data: LoginParamsType): AppThunk => async (dispatch) => 
 
     if (res.data.resultCode === 0) {
         dispatch(authTC())
-    } else {
-
+    } else if (res.data.resultCode === 10) {
+        dispatch(getCaptchaTC())
     }
 }
 
@@ -64,12 +70,18 @@ export const authTC = (): AppThunk => (dispatch) => {
     )
 }
 
+export const getCaptchaTC = (): AppThunk => async (dispatch) => {
+    const res = await authAPI.captcha()
+    dispatch(setCaptcha(res.data.url))
+}
+
 // types
 
 export type AuthActionsType =
     ReturnType<typeof setUserData>
     | ReturnType<typeof setIsLoggedIn>
     | ReturnType<typeof setIsLoggedOut>
+    | ReturnType<typeof setCaptcha>
 
 
 type InitialStateType = typeof initialState

@@ -14,6 +14,7 @@ const Login = () => {
 
     const dispatch = useDispatch()
     const isLogin = useAppSelector(state => state.auth.isLogin)
+    const captchaUrl = useAppSelector(state => state.auth.captcha)
 
 
     useEffect(() => {
@@ -95,6 +96,28 @@ const Login = () => {
                                 <input {...register("rememberMe")} type="checkbox" id="reminder"/>
                                 <label htmlFor="reminder">Remember me</label>
                             </div>
+                            {captchaUrl &&
+                                <>
+                                    <div><img src={captchaUrl} alt={"captcha"}/></div>
+                                    <input
+                                        className={s.input}
+                                        {...register("captcha", {
+                                            required: "Captcha is required"
+                                        })}
+                                    />
+                                    <ErrorMessage
+                                        errors={errors}
+                                        name="captcha"
+                                        render={({messages}) => {
+                                            return messages
+                                                ? Object.entries(messages).map(([type, message]) => (
+                                                    <p key={type} style={{color: "red"}}>{message}</p>
+                                                ))
+                                                : null;
+                                        }}
+                                    />
+                                </>
+                            }
                             <button className={s.button_login}>Войти</button>
                         </form>
                     </div>
