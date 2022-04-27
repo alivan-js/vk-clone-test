@@ -84,9 +84,15 @@ export const updatePhotoTC = (photoFile: File): AppThunk => async (dispatch) => 
     }
 }
 
-export const updateProfileTC = (profileData: EditParamsType): AppThunk => async (dispatch) => {
+export const updateProfileTC = (profileData: EditParamsType): AppThunk => async (dispatch, getState) => {
     dispatch(setLoading(true))
-    await profileAPI.updateProfile(profileData)
+    const userId = getState().profile.userInfo.userId.toString()
+    const res = await profileAPI.updateProfile(profileData)
+    if (res.data.resultCode === 0) {
+        if (userId != null) {
+            dispatch(fetchUserData(userId))
+        }
+    }
     dispatch(setLoading(false))
 }
 

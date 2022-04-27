@@ -41,23 +41,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = ({profile, setEditMode}) => {
     const dispatch = useDispatch()
 
     const onSubmit = handleSubmit(data => {
-            dispatch(updateProfileTC({
-                userId: profile.userId,
-                aboutMe: data.aboutMe,
-                lookingForAJob: data.lookingForAJob,
-                lookingForAJobDescription: data.lookingForAJobDescription,
-                fullName: data.fullName,
-                contacts: {
-                    github: data.contacts.github,
-                    vk: data.contacts.vk,
-                    facebook: data.contacts.facebook,
-                    instagram: data.contacts.instagram,
-                    twitter: data.contacts.twitter,
-                    website: data.contacts.website,
-                    youtube: data.contacts.youtube,
-                    mainLink: data.contacts.mainLink,
-                }
-            }))
+            dispatch(updateProfileTC(data))
             setEditMode(false)
         }
     );
@@ -74,7 +58,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = ({profile, setEditMode}) => {
                 <div>{"Are you looking for a job?"}</div>
                 <div>
                     <input
-                        type={"radio"}
+                        type={"checkbox"}
                         {...register("lookingForAJob")}
                     />
                 </div>
