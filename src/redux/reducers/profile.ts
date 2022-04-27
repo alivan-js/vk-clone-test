@@ -42,6 +42,10 @@ export function profileReducer(state = initialState, action: ProfileActionsType)
             return {
                 ...state, status: action.payload
             }
+        case "PROFILE/PHOTO-SET":
+            return {
+                ...state, userInfo: {...state.userInfo, photos: action.photos}
+            }
         default:
             return state
     }
@@ -54,6 +58,7 @@ export const likePost = (payload: number) => ({type: "PROFILE/POST-LIKED", paylo
 export const setProfile = (payload: any) => ({type: "PROFILE/PROFILE-SET", payload}) as const
 export const setLoading = (payload: boolean) => ({type: "PROFILE/LOADING-SET", payload}) as const
 export const setStatus = (status: string | null) => ({type: "PROFILE/STATUS-SET", payload: status}) as const
+export const setPhoto = (photos: PhotosType) => ({type: "PROFILE/PHOTO-SET", photos}) as const
 
 // thunks
 
@@ -72,6 +77,19 @@ export const changeStatusTC = (status: string): AppThunk => async (dispatch) => 
     dispatch(setLoading(false))
 }
 
+export const updatePhotoTC = (photoFile: File): AppThunk => async (dispatch) => {
+    const res = await profileAPI.updatePhoto(photoFile)
+    if (res.resultCode === 0) {
+        dispatch(setPhoto(res.data))
+    }
+}
+
+export const updateProfileTC = (profileData: EditParamsType): AppThunk => async (dispatch) => {
+    dispatch(setLoading(true))
+    await profileAPI.updateProfile(profileData)
+    dispatch(setLoading(false))
+}
+
 // types
 
 export type ProfileActionsType =
@@ -80,3 +98,11 @@ export type ProfileActionsType =
     | ReturnType<typeof setProfile>
     | ReturnType<typeof setLoading>
     | ReturnType<typeof setStatus>
+    | ReturnType<typeof setPhoto>
+
+export type PhotosType = {
+    small: string | null
+    large: string | null
+}
+
+export type EditParamsType = Omit<ProfileUserInfoType, "id" | "photos">

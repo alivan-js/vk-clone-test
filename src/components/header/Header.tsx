@@ -11,7 +11,7 @@ let arrow = require("./../../assets/arrow.png")
 const Header = () => {
 
     const dispatch = useDispatch()
-    const isLogin = useAppSelector(state => state.profile)
+    const isLogin = useAppSelector(state => state.auth.isLogin)
 
     return (
         <header className="header">

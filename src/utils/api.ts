@@ -1,5 +1,6 @@
 import axios from "axios";
 import {Nullable} from "../redux/store";
+import {EditParamsType, PhotosType} from "../redux/reducers/profile";
 
 
 const instance = axios.create({
@@ -25,7 +26,7 @@ export const authAPI = {
         return instance.get<CommonResponseType<userLoginData>>("/auth/me")
     },
     login(loginData: LoginParamsType) {
-        return instance.post<CommonResponseType<{userId: number}>>("/auth/login", loginData)
+        return instance.post<CommonResponseType<{ userId: number }>>("/auth/login", loginData)
     },
     logout() {
         return instance.delete<CommonResponseType<{}>>("/auth/login")
@@ -41,7 +42,20 @@ export const profileAPI = {
     },
     updateStatus(status: string) {
         return instance.put<CommonResponseType<{}>>("/profile/status", {status})
-    }
+    },
+    updatePhoto(photoFile: File) {
+        const formData = new FormData();
+        formData.append("image", photoFile);
+
+        return instance.put<CommonResponseType<PhotosType>>("/profile/photo", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((response) => response.data)
+    },
+    updateProfile(profileData: EditParamsType) {
+        return instance.put<CommonResponseType<{}>>(`/profile`, profileData)
+    },
 }
 
 // types

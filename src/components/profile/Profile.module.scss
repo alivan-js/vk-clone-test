@@ -21,7 +21,11 @@
       margin-bottom: 15px;
     }
 
-    button {
+    input{
+      display: none;
+    }
+
+    label {
       height: 32px;
       background: #E5EBF1;
       border-radius: 5px;
@@ -29,6 +33,10 @@
       font-size: 17px;
       line-height: 20px;
       color: #8A94A0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
     }
   }
 }

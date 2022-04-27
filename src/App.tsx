@@ -17,30 +17,28 @@ const App = () => {
     const isInitialized = useAppSelector(state => state.app.isInitialized)
 
     useEffect(() => {
-      dispatch(initializeAppTC())
+        dispatch(initializeAppTC())
     }, [])
 
 
-    let id: Nullable<number> | string  = useAppSelector<Nullable<number>>(state => state.auth.userData.id)
+    let id: Nullable<number> | string = useAppSelector<Nullable<number>>(state => state.auth.userData.id)
 
     if (!isInitialized) {
         return <Loader/>
     }
 
     return (
-        <>
-            <Routes>
-                <Route path={"/login"} element={<Login/>}/>
-                <Route path={"/"} element={<Layout/>}>
-                    <Route index element={<Navigate to={"profile"}/>}/>
-                    <Route path={"/chat"} element={<Chat/>}/>
-                    <Route path={"/profile"} element={<Navigate to={"/profile/" + id}/>}/>
-                    <Route path={"/profile/:id"} element={<Profile/>}/>
-                    <Route path={"/users"} element={<Users/>}/>
-                    <Route path={"*"} element={<Profile/>}/>
-                </Route>
-            </Routes>
-        </>
+        <Routes>
+            <Route path={"/login"} element={<Login/>}/>
+            <Route path={"/"} element={<Layout/>}>
+                <Route index element={<Navigate to={"profile"}/>}/>
+                <Route path={"/chat"} element={<Chat/>}/>
+                <Route path={"/profile"} element={<Navigate to={"/profile/" + id}/>}/>
+                <Route path={"/profile/:id"} element={<Profile/>}/>
+                <Route path={"/users"} element={<Users/>}/>
+                <Route path={"*"} element={<Profile/>}/>
+            </Route>
+        </Routes>
     );
 }
 
