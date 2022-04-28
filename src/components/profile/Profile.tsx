@@ -4,10 +4,10 @@ import Post from "./Post";
 import {addPost, changeStatusTC, fetchUserData, updatePhotoTC} from "../../redux/reducers/profile";
 import s from "./Profile.module.scss"
 import {useParams} from "react-router-dom";
-import {WithAuthRedirect} from "../HOC/withAuthRedirect";
+import {WithAuthRedirect} from "../hoc/withAuthRedirect";
 import EditableSpan from "../EditableSpan";
 import {Nullable, useAppSelector} from "../../redux/store";
-import userAvatar from "./../../assets/Rectangle 12.png"
+// import userAvatar from "./../../assets/svg/user.svg"
 import ProfileEditForm from './ProfileEditForm';
 import ProfileInfo from "./ProfileInfo";
 
@@ -37,35 +37,37 @@ const Profile = () => {
         }
     }, [params.id])
 
-    const onChangePostHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangePostHandler = useCallback( (e: ChangeEvent<HTMLInputElement>) => {
         setPostText(e.currentTarget.value)
-    }
+    }, [])
 
-    const onKeyPressPostHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPressPostHandler = useCallback( (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter" && postText.trim()) {
             dispatch(addPost(postText.trim()))
             setPostText("")
         }
-    }
+    }, [dispatch])
 
-    const onChangePhotoCallback = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangePhotoCallback = useCallback( (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
             dispatch(updatePhotoTC((e.target.files[0])))
         }
-    }
+    }, [dispatch])
 
     return (
         <div className={s.content}>
             <div className={s.first__column}>
                 <div className={s.first__column__info}>
-                    <img src={profile.userInfo?.photos?.large || userAvatar} alt=""/>
+                    <label htmlFor="changeImg"><img src={profile.userInfo?.photos?.large || "userAvatar"} alt=""
+                                                    className={s.first__column__info__img}/></label>
                     {isOwner &&
                         <>
                             <input type={"file"} id={"changeImg"} onChange={onChangePhotoCallback}/>
-                            <label
-                                // htmlFor={"changeImg"}
-                                onClick={() => {setEditMode(true)}}
-                            >Редактировать</label>
+                            <button
+                                onClick={() => {
+                                    setEditMode(true)
+                                }}
+                            >Редактировать</button>
                         </>
                     }
                 </div>
@@ -97,7 +99,7 @@ const Profile = () => {
                 </div>
                 {isOwner &&
                     <div className={s.input}>
-                        <img src={userAvatar} alt=""/>
+                        <img src={"userAvatar"} alt=""/>
                         <input value={postText}
                                onChange={onChangePostHandler}
                                onKeyPress={onKeyPressPostHandler}

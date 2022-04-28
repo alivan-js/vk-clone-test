@@ -7,7 +7,7 @@ import {LoginParamsType} from "../../utils/api";
 import {useDispatch} from "react-redux";
 import {useAppSelector} from "../../redux/store";
 import {Navigate} from 'react-router-dom';
-import {authTC, loginTC} from "../../redux/reducers/auth";
+import {authTC, loginTC, setCaptcha} from "../../redux/reducers/auth";
 
 
 const Login = () => {
@@ -16,12 +16,12 @@ const Login = () => {
     const isLogin = useAppSelector(state => state.auth.isLogin)
     const captchaUrl = useAppSelector(state => state.auth.captcha)
 
-
     useEffect(() => {
-            dispatch(authTC())
-        },
-        [])
-
+        dispatch(authTC())
+        return () => {
+            dispatch(setCaptcha(""))
+        }
+    }, [])
 
     const {
         register,

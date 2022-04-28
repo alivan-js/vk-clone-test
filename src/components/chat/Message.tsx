@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 
-let userAvatar = require("./../../assets/Rectangle 12.png")
+let userAvatar = require("./../../assets/svg/user.svg")
 
 type MessageType = {
     text: string

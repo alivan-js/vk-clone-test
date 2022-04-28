@@ -10,6 +10,10 @@ const initialState = {
     },
     page: 1,
     totalPage: 1,
+    filter: {
+        term: "",
+        friend: null as Nullable<boolean>
+    }
 }
 
 export function usersReducer(state = initialState, action: UsersActionsType): InitialStateType {
@@ -48,6 +52,9 @@ export function usersReducer(state = initialState, action: UsersActionsType): In
         case "USERS/USERS-CLEARED": {
             return {...state, users: []}
         }
+        case "USERS/FILTER-SET": {
+            return {...state, filter: action.payload}
+        }
         default:
             return state
     }
@@ -62,13 +69,15 @@ export const setFollowingProgress = (payload: { status: boolean, id: number | nu
 export const setFetchingUsers = (payload: boolean) => ({type: "USERS/FETCHING-USERS-SET", payload}) as const
 export const setTotalNumber = (payload: number) => ({type: "USERS/TOTAL-NUMBER-SET", payload}) as const
 export const setPage = (payload: number) => ({type: "USERS/PAGE-SET", payload}) as const
+export const setFilter = (filter: FilterType) => ({type: "USERS/FILTER-SET", payload: filter}) as const
 export const clearUsers = () => ({type: "USERS/USERS-CLEARED"}) as const
 
 // thunks
 
-export const fetchUsers = (page: number): AppThunk => async (dispatch) => {
+export const fetchUsers = (page: number, filter: FilterType): AppThunk => async (dispatch) => {
     dispatch(setFetchingUsers(true))
-    const data = await usersAPI.getUsers(page)
+    dispatch(setFilter(filter))
+    const data = await usersAPI.getUsers(page, filter.term, filter.friend)
     dispatch(setTotalNumber(data.totalCount))
     dispatch(addUsers(data.items))
     dispatch(setFetchingUsers(false))
@@ -92,6 +101,11 @@ export const fetchUnfollowing = (id: number): AppThunk => async (dispatch) => {
 
 type InitialStateType = typeof initialState
 
+export type FilterType = {
+    term: string,
+    friend: Nullable<boolean>
+}
+
 export type UsersActionsType =
     ReturnType<typeof addUsers>
     | ReturnType<typeof followUser>
@@ -100,3 +114,4 @@ export type UsersActionsType =
     | ReturnType<typeof setPage>
     | ReturnType<typeof setFetchingUsers>
     | ReturnType<typeof clearUsers>
+    | ReturnType<typeof setFilter>

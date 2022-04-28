@@ -1,8 +1,10 @@
-import {AppThunk} from "../store";
+import {AppThunk, Nullable} from "../store";
 import {authTC} from "./auth";
 
 const initialState = {
-    isInitialized: false
+    isInitialized: false,
+    error: null as Nullable<string>,
+    isLoading: false
 }
 
 export function appReducer(state = initialState, action: AppActionsType): InitialStateType {

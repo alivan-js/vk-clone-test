@@ -1,5 +1,5 @@
 import {AppThunk, Nullable} from "../store";
-import {authAPI, LoginParamsType} from "../../utils/api";
+import {authAPI, LoginParamsType, ResultCode} from "../../utils/api";
 
 const initialState = {
     isLogin: false,
@@ -43,9 +43,9 @@ export const setCaptcha = (url: string) => ({type: "AUTH/CAPTCHA-SET", url}) as 
 export const loginTC = (data: LoginParamsType): AppThunk => async (dispatch) => {
     const res = await authAPI.login(data)
 
-    if (res.data.resultCode === 0) {
+    if (res.data.resultCode === ResultCode.Success) {
         dispatch(authTC())
-    } else if (res.data.resultCode === 10) {
+    } else if (res.data.resultCode === ResultCode.Captcha) {
         dispatch(getCaptchaTC())
     }
 }
@@ -53,7 +53,7 @@ export const loginTC = (data: LoginParamsType): AppThunk => async (dispatch) => 
 export const logoutTC = (): AppThunk => async (dispatch) => {
     const res = await authAPI.logout()
 
-    if (res.data.resultCode === 0) {
+    if (res.data.resultCode === ResultCode.Success) {
         dispatch(setIsLoggedOut())
     } else {
 
@@ -62,7 +62,7 @@ export const logoutTC = (): AppThunk => async (dispatch) => {
 
 export const authTC = (): AppThunk => (dispatch) => {
     return authAPI.me().then((res) => {
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === ResultCode.Success) {
                 dispatch(setUserData(res.data.data))
                 dispatch(setIsLoggedIn())
             }

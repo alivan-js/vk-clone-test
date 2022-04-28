@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import './App.scss';
 import Chat from './components/chat/Chat';
@@ -11,14 +11,28 @@ import {useDispatch} from "react-redux";
 import Loader from "./components/loader/Loader";
 import {initializeAppTC} from "./redux/reducers/app";
 
-const App = () => {
+const App: FC = () => {
 
     const dispatch = useDispatch()
-    const isInitialized = useAppSelector(state => state.app.isInitialized)
+    const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
+
+    const catchUnhandledErrors = (e: PromiseRejectionEvent): void => {
+        alert("Some error occured")
+    }
+
+    useEffect(() => {
+            window.addEventListener("unhandledrejection", catchUnhandledErrors)
+            return () => {
+                window.removeEventListener("unhandledrejection", catchUnhandledErrors)
+            }
+        },
+        [])
 
     useEffect(() => {
         dispatch(initializeAppTC())
     }, [])
+
+        // нужно ли выходить из инициализации?
 
 
     let id: Nullable<number> | string = useAppSelector<Nullable<number>>(state => state.auth.userData.id)

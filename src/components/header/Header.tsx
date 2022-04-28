@@ -4,8 +4,8 @@ import {useAppSelector} from '../../redux/store';
 import {logoutTC} from "../../redux/reducers/auth";
 
 let logo = require("./../../assets/img/logo.png");
-let userAvatar = require("./../../assets/Rectangle 12.png")
-let arrow = require("./../../assets/arrow.png")
+let userAvatar = require("./../../assets/svg/user.svg")
+let arrow = require("./../../assets/svg/arrow-small.svg")
 
 
 const Header = () => {
@@ -18,8 +18,7 @@ const Header = () => {
             <div className={"container"}>
                 <div className="container header__container">
                     <div className={"header__logo"}><img src={logo} alt={"Logo"}/><span>насвязи</span></div>
-                    {isLogin
-                        ?
+                    {isLogin &&
                         <div className={"header__user"}><img className={"header__user_avatar"} src={userAvatar}
                                                              alt={"User avatar"}/>
                             <img
@@ -28,8 +27,7 @@ const Header = () => {
                                 }}
                                 src={arrow}
                                 alt={"Arrow"}/>
-                        </div>
-                        : <div>LOGIN</div>}
+                        </div>}
                 </div>
             </div>
         </header>

@@ -1,4 +1,4 @@
-import {profileAPI, ProfileUserInfoType} from "../../utils/api";
+import {profileAPI, ProfileUserInfoType, ResultCode} from "../../utils/api";
 import {AppThunk, Nullable} from "../store";
 
 type initialStateType = typeof initialState
@@ -79,7 +79,7 @@ export const changeStatusTC = (status: string): AppThunk => async (dispatch) => 
 
 export const updatePhotoTC = (photoFile: File): AppThunk => async (dispatch) => {
     const res = await profileAPI.updatePhoto(photoFile)
-    if (res.resultCode === 0) {
+    if (res.resultCode === ResultCode.Success) {
         dispatch(setPhoto(res.data))
     }
 }
@@ -88,7 +88,7 @@ export const updateProfileTC = (profileData: EditParamsType): AppThunk => async 
     dispatch(setLoading(true))
     const userId = getState().profile.userInfo.userId.toString()
     const res = await profileAPI.updateProfile(profileData)
-    if (res.data.resultCode === 0) {
+    if (res.data.resultCode === ResultCode.Success) {
         if (userId != null) {
             dispatch(fetchUserData(userId))
         }

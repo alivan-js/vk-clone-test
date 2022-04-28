@@ -2,7 +2,7 @@ import React, {ComponentType} from 'react';
 import {Navigate} from 'react-router-dom';
 import {useAppSelector} from "../../redux/store";
 
-export function WithAuthRedirect<T>(Component: ComponentType<T>) {
+export function WithAuthRedirect<T>(WrappedComponent: ComponentType<T>) {
     function ComponentWithRedirect(props: T) {
 
         const isLogin = useAppSelector(state => state.auth.isLogin)
@@ -10,7 +10,7 @@ export function WithAuthRedirect<T>(Component: ComponentType<T>) {
         if (!isLogin) return <Navigate to="/login"/>
 
         return (
-            <Component {...props}/>
+            <WrappedComponent {...props}/>
         )
     }
 

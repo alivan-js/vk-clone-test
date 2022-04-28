@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {likePost} from "../../redux/reducers/profile";
 import s from "./Post.module.scss"
 
-let userAvatar = require("./../../assets/Rectangle 12.png")
+let userAvatar = require("./../../assets/svg/user.svg")
 
 type PostType = {
     text: string,

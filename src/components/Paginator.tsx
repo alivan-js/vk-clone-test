@@ -1,37 +1,44 @@
 import React, {FC, MutableRefObject, useEffect, useRef} from 'react';
-import {useDispatch} from "react-redux";
-import {AppThunk} from "../redux/store";
+import {FilterType} from "../redux/reducers/users";
 
 type PaginatorProps = {
     observedElement: MutableRefObject<HTMLInputElement>
     totalPage: number
     currentPage: number
     isLoading: boolean
-    clearItems: () => { type: string }
-    fetchItems: (page: number) => AppThunk
-    setPage: (payload: number) => { type: string; payload: number; }
+    clearItems: () => void
+    fetchItems: () => void
+    setPage: (payload: number) => void
+    filter: FilterType
+    changeFilter: (filter: FilterType) => void
 }
 
-const Paginator: FC<PaginatorProps> = ({
-                                           observedElement,
-                                           totalPage,
-                                           currentPage,
-                                           isLoading,
-                                           fetchItems,
-                                           clearItems,
-                                           setPage
-                                       }) => {
+const Paginator: FC<PaginatorProps> = React.memo(({
+                                                      observedElement,
+                                                      totalPage,
+                                                      currentPage,
+                                                      isLoading,
+                                                      fetchItems,
+                                                      clearItems,
+                                                      setPage,
+                                                      filter,
+                                                      changeFilter
+                                                  }) => {
 
     const observer = useRef()
-    const dispatch = useDispatch()
+
+    console.log(filter)
 
     useEffect(() => {
-        dispatch(fetchItems(currentPage))
-    }, [currentPage])
+        fetchItems()
+        setPage(1)
+    }, [currentPage, filter])
 
     useEffect(() => {
         return () => {
-            dispatch(clearItems())
+            clearItems()
+            setPage(1)
+            changeFilter({term: "", friend: null})
         }
     }, [])
 
@@ -41,7 +48,7 @@ const Paginator: FC<PaginatorProps> = ({
         if (observer.current) observer.current.disconnect()
         let callback = function (entries: any, observer: any) {
             if (entries[0].isIntersecting && currentPage < totalPage) {
-                dispatch(setPage(currentPage + 1))
+                setPage(currentPage + 1)
             }
         };
 
@@ -55,6 +62,6 @@ const Paginator: FC<PaginatorProps> = ({
         <>
         </>
     );
-};
+})
 
 export default Paginator;

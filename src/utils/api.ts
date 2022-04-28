@@ -10,8 +10,8 @@ const instance = axios.create({
 })
 
 export const usersAPI = {
-    getUsers(page: number) {
-        return instance.get<GetUsersResponseType>(`users?page=${page}`).then((response) => response.data)
+    getUsers(page: number, term: string, friend: Nullable<boolean>) {
+        return instance.get<GetUsersResponseType>(`users?page=${page}&term=${term}&friend=${friend}`).then((response) => response.data)
     },
     follow(id: number) {
         return instance.post<boolean>(`follow/${id}`).then((response) => response.data)
@@ -85,7 +85,7 @@ type CommonResponseType<T> = {
     data: T
     messages: Array<string>
     fieldsErrors: Array<string>
-    resultCode: number
+    resultCode: ResultCode
 }
 
 export type LoginParamsType = {
@@ -97,16 +97,7 @@ export type LoginParamsType = {
 
 export type ProfileUserInfoType = {
     "aboutMe": Nullable<number>
-    "contacts": {
-        "facebook": Nullable<string>
-        "website": Nullable<string>
-        "vk": Nullable<string>
-        "twitter": Nullable<string>
-        "instagram": Nullable<string>
-        "youtube": Nullable<string>
-        "github": Nullable<string>
-        "mainLink": Nullable<string>
-    },
+    "contacts": ContactsType,
     "lookingForAJob": Nullable<boolean>
     "lookingForAJobDescription": Nullable<string>
     "fullName": string
@@ -117,8 +108,25 @@ export type ProfileUserInfoType = {
     }
 }
 
+export type ContactsType = {
+    "facebook": Nullable<string>
+    "website": Nullable<string>
+    "vk": Nullable<string>
+    "twitter": Nullable<string>
+    "instagram": Nullable<string>
+    "youtube": Nullable<string>
+    "github": Nullable<string>
+    "mainLink": Nullable<string>
+}
+
 type userLoginData = {
     id: number
     login: string
     email: string
+}
+
+export enum ResultCode {
+    Success = 0,
+    Failed = 1,
+    Captcha = 10
 }

@@ -2,11 +2,11 @@ import React, {ChangeEvent, MouseEvent, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import Message from "./Message";
 import {addMessage} from '../../redux/reducers/chat';
-import {WithAuthRedirect} from "../HOC/withAuthRedirect";
+import {WithAuthRedirect} from "../hoc/withAuthRedirect";
 import {useAppSelector} from "../../redux/store";
-
-let arrow = require("./../../assets/arrow.png")
-let bigArrow = require("./../../assets/bigArrow.png")
+// import arrow from "./../../assets/svg/arrow-small.svg"
+let arrow = require("./../../assets/svg/arrow-small.svg")
+let bigArrow = require("./../../assets/svg/arrow-big.svg")
 
 const Chat = () => {
 
