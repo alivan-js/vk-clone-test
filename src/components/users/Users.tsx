@@ -28,24 +28,33 @@ const Users: FC = () => {
         const parsed = Object.fromEntries(searchParams)
 
         let actualFilter = filter
-        if (parsed.term) actualFilter = {...actualFilter, term: parsed.term as string}
-        if (parsed.friend) actualFilter = {
-            ...actualFilter,
-            friend: parsed.friend === "null" ? null : parsed.friend === "true"
+
+        if (!!parsed.term) actualFilter = {...actualFilter, term: parsed.term as string}
+
+        switch(parsed.friend) {
+            case "null":
+                actualFilter = {...actualFilter, friend: null}
+                break;
+            case "true":
+                actualFilter = {...actualFilter, friend: true}
+                break;
+            case "false":
+                actualFilter = {...actualFilter, friend: false}
+                break;
         }
+
         dispatch(fetchUsers(1, actualFilter))
     }, [])
 
     useEffect(() => {
-        if (filter.term === "") {
-            setSearchParams({friend: JSON.stringify(filter.friend)})
-        } else if (filter.friend === null) {
-            setSearchParams({term: filter.term})
-        } else if (filter.term === "" && filter.friend === null) {
-            setSearchParams({})
-        } else {
-            setSearchParams({term: filter.term, friend: JSON.stringify(filter.friend)})
-        }
+
+        const query: any = {}
+
+        if (filter.term) query.term = filter.term
+        if (filter.friend !== null) query.friend = String(filter.friend)
+
+        setSearchParams({term: query.term ? query.term : "", friend: query.friend ? query.friend : null})
+
     }, [filter])
 
 

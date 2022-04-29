@@ -32,8 +32,6 @@ const App: FC = () => {
         dispatch(initializeAppTC())
     }, [])
 
-        // нужно ли выходить из инициализации?
-
 
     let id: Nullable<number> | string = useAppSelector<Nullable<number>>(state => state.auth.userData.id)
 
