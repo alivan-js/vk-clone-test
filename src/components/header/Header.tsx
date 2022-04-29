@@ -3,10 +3,7 @@ import {useDispatch} from "react-redux";
 import {useAppSelector} from '../../redux/store';
 import {logoutTC} from "../../redux/reducers/auth";
 
-let logo = require("./../../assets/img/logo.png");
-let userAvatar = require("./../../assets/svg/user.svg")
-let arrow = require("./../../assets/svg/arrow-small.svg")
-
+// require не используется
 
 const Header = () => {
 
@@ -17,15 +14,15 @@ const Header = () => {
         <header className="header">
             <div className={"container"}>
                 <div className="container header__container">
-                    <div className={"header__logo"}><img src={logo} alt={"Logo"}/><span>насвязи</span></div>
+                    <div className={"header__logo"}><img src={"/assets/img/logo.png"} alt={"Logo"}/><span>насвязи</span></div>
                     {isLogin &&
-                        <div className={"header__user"}><img className={"header__user_avatar"} src={userAvatar}
+                        <div className={"header__user"}><img className={"header__user_avatar"} src={"/assets/svg/user.svg"}
                                                              alt={"User avatar"}/>
                             <img
                                 onClick={() => {
                                     dispatch(logoutTC())
                                 }}
-                                src={arrow}
+                                src={"/assets/svg/arrow-small.svg"}
                                 alt={"Arrow"}/>
                         </div>}
                 </div>

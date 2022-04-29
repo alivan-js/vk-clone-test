@@ -1,17 +1,19 @@
 import React, {FC} from 'react';
 
-let userAvatar = require("./../../assets/svg/user.svg")
 
 type MessageType = {
-    text: string
+    text: string,
+    photo: string
+    userName: string
+    userId: number
 }
 
-const Message: FC<MessageType> = React.memo(({text}) => {
+const Message: FC<MessageType> = React.memo(({text, photo, userName, userId}) => {
     return (
         <div className={"message"}>
-            <div><img className={"header__user_avatar"} src={userAvatar} alt=""/></div>
+            <div><img className={"header__user_avatar"} src={photo} alt=""/></div>
             <div>
-                <div><span className={"message-name"}>Мандалорец</span> <span className={"message-date"}>17:31</span>
+                <div><span className={"message-name"}>{userName}</span>
                 </div>
                 <div className={"message-text"}>{text}
                 </div>

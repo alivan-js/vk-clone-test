@@ -7,11 +7,8 @@ import {useParams} from "react-router-dom";
 import {WithAuthRedirect} from "../hoc/withAuthRedirect";
 import EditableSpan from "../EditableSpan";
 import {Nullable, useAppSelector} from "../../redux/store";
-// import userAvatar from "./../../assets/svg/user.svg"
 import ProfileEditForm from './ProfileEditForm';
 import ProfileInfo from "./ProfileInfo";
-
-let emptyCard = require("./../../assets/img/emptycard.png")
 
 const Profile = () => {
 
@@ -58,7 +55,7 @@ const Profile = () => {
         <div className={s.content}>
             <div className={s.first__column}>
                 <div className={s.first__column__info}>
-                    <label htmlFor="changeImg"><img src={profile.userInfo?.photos?.large || "userAvatar"} alt=""
+                    <label htmlFor="changeImg"><img src={profile.userInfo?.photos?.large || "/assets/svg/user.svg"} alt=""
                                                     className={s.first__column__info__img}/></label>
                     {isOwner &&
                         <>
@@ -99,7 +96,7 @@ const Profile = () => {
                 </div>
                 {isOwner &&
                     <div className={s.input}>
-                        <img src={"userAvatar"} alt=""/>
+                        <img src={"/assets/svg/user.svg"} alt=""/>
                         <input value={postText}
                                onChange={onChangePostHandler}
                                onKeyPress={onKeyPressPostHandler}
@@ -110,7 +107,7 @@ const Profile = () => {
                     <div className={s.posts__header}>{profile.posts.length ? "Мои записи" : "Нет записей"}</div>
                     <div>
                         {!profile.posts.length
-                            ? <div className={s.empty__posts}><img src={emptyCard} alt=""/>
+                            ? <div className={s.empty__posts}><img src={"/assets/img/logo.png"} alt=""/>
                                 <span>На стене нет пока ни одной записи</span></div>
                             : profile.posts.map(el => <Post id={el.id} key={el.id} text={el.text}
                                                             likesCount={el.likesCount}/>)}

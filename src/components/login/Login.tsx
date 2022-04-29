@@ -26,6 +26,7 @@ const Login = () => {
     const {
         register,
         formState: {errors},
+        reset,
         handleSubmit
     } = useForm<LoginParamsType>({
         criteriaMode: "all",

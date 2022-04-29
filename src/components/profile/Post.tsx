@@ -3,8 +3,6 @@ import {useDispatch} from "react-redux";
 import {likePost} from "../../redux/reducers/profile";
 import s from "./Post.module.scss"
 
-let userAvatar = require("./../../assets/svg/user.svg")
-
 type PostType = {
     text: string,
     likesCount: number
@@ -27,7 +25,7 @@ const Post: FC<PostType> = React.memo(({text, likesCount, id}) => {
     return (
         <div className={s.post}>
             <div className={s.post__author}>
-                <img src={userAvatar} alt=""/>
+                <img src={""} alt=""/>
                 <span>Малыш Грогу</span>
             </div>
             <div className={s.post__body}>

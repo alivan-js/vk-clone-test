@@ -22,7 +22,8 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
 
     const {
         register,
-        handleSubmit
+        handleSubmit,
+        reset,
     } = useForm<filterType>({
         criteriaMode: "all",
         defaultValues: {
@@ -30,6 +31,8 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
             friend: JSON.stringify(filter.friend)
         }
     });
+
+
 
     const onSubmit = handleSubmit(data => {
 
@@ -57,3 +60,7 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
         </div>
     );
 })
+
+function useEffect(arg0: () => void, arg1: any[]) {
+    throw new Error("Function not implemented.");
+}

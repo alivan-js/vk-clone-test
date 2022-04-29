@@ -1,55 +1,33 @@
-import React, {ChangeEvent, MouseEvent, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import Message from "./Message";
-import {addMessage} from '../../redux/reducers/chat';
 import {WithAuthRedirect} from "../hoc/withAuthRedirect";
+import {startMessagesListening, stopMessagesListening} from "../../redux/reducers/chat";
 import {useAppSelector} from "../../redux/store";
-// import arrow from "./../../assets/svg/arrow-small.svg"
-let arrow = require("./../../assets/svg/arrow-small.svg")
-let bigArrow = require("./../../assets/svg/arrow-big.svg")
+import ChatForm from "./ChatForm";
 
 const Chat = () => {
 
     const dispatch = useDispatch()
     const messages = useAppSelector(state => state.chat.messages)
-    const [message, setMessage] = useState<string>("")
+    const status = useAppSelector(state => state.chat.status)
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setMessage(e.currentTarget.value)
-    }
-
-    const onClickButtonHandler = (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
-        if (message.trim()) {
-            dispatch(addMessage(message))
-            setMessage("")
+    useEffect(() => {
+        dispatch(startMessagesListening())
+        return () => {
+            dispatch(stopMessagesListening())
         }
-    }
+    }, [])
 
     return (
         <div className={"chat-content"}>
-            <div className={"chat-header"}>
-                <div className={"chat-backButton"}>
-                    <img src={arrow} alt="arrow"/>
-                    <span>Назад</span>
-                </div>
-            </div>
             <div className={"chat-text"}>
-                {messages.map(el =>
-                    <Message key={el.id} text={el.text}/>)
+                {messages.map((el) =>
+                    <Message key={new Date().getDate()} text={el.message} photo={el.photo} userName={el.userName}
+                             userId={el.userId}/>)
                 }
             </div>
-            <div className={"chat-input"}>
-                <form action="submit">
-                    <input type="text"
-                           value={message}
-                           onChange={onChangeHandler}
-                           placeholder={"Напишите сообщение..."}/>
-                    <button type={"submit"} onClick={onClickButtonHandler}>
-                        <img src={bigArrow} alt=""/>
-                    </button>
-                </form>
-            </div>
+            <ChatForm status={status}/>
         </div>
     );
 };

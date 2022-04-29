@@ -29,7 +29,7 @@ const User: FC<UserType> = React.memo(({img, name, isFollowed, id}) => {
         <div className={s.user}>
             <NavLink to={`/profile/${id}`}>
                 <img className={s.user__logo}
-                     src={img ? img : "https://cdn-icons-png.flaticon.com/512/219/219983.png"} alt={"UserLogo"}/>
+                     src={img ? img : "/assets/svg/user.svg"} alt={"UserLogo"}/>
             </NavLink>
             <div className={s.user__body}>
                 <NavLink to={`/profile/${id}`}><span className={s.user__name}>{name}</span></NavLink>

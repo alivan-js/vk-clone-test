@@ -5,24 +5,24 @@ import User from './User';
 import Loader from '../loader/Loader';
 import {WithAuthRedirect} from "../hoc/withAuthRedirect";
 import {compose} from 'redux';
-import Paginator from "../Paginator";
 import {clearUsers, fetchUsers, FilterType, setFilter, setPage} from "../../redux/reducers/users";
 import {useDispatch} from "react-redux";
 import {UsersSearchForm} from './UsersSearchForm';
 import {useSearchParams} from 'react-router-dom';
+import {useOnScreen} from '../../utils/useOnScreen';
 
 const Users: FC = () => {
 
-    const lastElement = useRef() as MutableRefObject<HTMLInputElement>
+    const observedElement = useRef() as MutableRefObject<HTMLInputElement>
+
     const page = useAppSelector(state => state.users.page)
-    const totalPage = useAppSelector(state => state.users.totalPage)
+    const totalPage = useAppSelector(state => state.users.totalItems)
     const users = useAppSelector(state => state.users.users)
     const isLoading = useAppSelector(state => state.users.isFetchingUsers)
     const filter = useAppSelector(state => state.users.filter)
-    const dispatch = useDispatch()
-
     const [searchParams, setSearchParams] = useSearchParams()
 
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const parsed = Object.fromEntries(searchParams)
@@ -34,7 +34,6 @@ const Users: FC = () => {
             friend: parsed.friend === "null" ? null : parsed.friend === "true"
         }
         dispatch(fetchUsers(1, actualFilter))
-
     }, [])
 
     useEffect(() => {
@@ -42,7 +41,6 @@ const Users: FC = () => {
             setSearchParams({friend: JSON.stringify(filter.friend)})
         } else if (filter.friend === null) {
             setSearchParams({term: filter.term})
-
         } else if (filter.term === "" && filter.friend === null) {
             setSearchParams({})
         } else {
@@ -50,9 +48,6 @@ const Users: FC = () => {
         }
     }, [filter])
 
-    const clearItemsCallback = useCallback(() => {
-        dispatch(clearUsers())
-    }, [dispatch])
 
     const changeFilterCallback = useCallback((filter: FilterType) => {
         dispatch(setFilter(filter))
@@ -60,19 +55,28 @@ const Users: FC = () => {
         dispatch(setPage(1))
     }, [dispatch, filter])
 
-    const fetchItemsCallback = useCallback(() => {
-        dispatch(fetchUsers(page, filter))
-    }, [dispatch, page, filter])
+    useEffect(() => {
+        return () => {
+            dispatch(clearUsers())
+            dispatch(setFilter({term: "", friend: null}))
+            dispatch(setPage(1))
+        }
+    }, [])
 
-    const setPageCallback = useCallback((page: number) => {
-        dispatch(setPage(page))
-    }, [dispatch, page])
+    useEffect(() => {
+        dispatch(fetchUsers(page, filter))
+    }, [filter, page])
+
+    const isOnScreen = useOnScreen(observedElement);
+
+    useEffect(() => {
+        if ((page < (Math.ceil(totalPage/10))) && isOnScreen) {
+            dispatch(setPage(page + 1))
+        }
+    }, [isOnScreen])
 
     return (
         <>
-            <Paginator observedElement={lastElement} totalPage={totalPage} currentPage={page} isLoading={isLoading}
-                       clearItems={clearItemsCallback} fetchItems={fetchItemsCallback} setPage={setPageCallback}
-                       filter={filter} changeFilter={changeFilterCallback}/>
             <UsersSearchForm changeFilter={changeFilterCallback} filter={filter}/>
             <div className={s.content}>
                 <div className={s.body}>
@@ -82,7 +86,7 @@ const Users: FC = () => {
                         }
                     )}
                     {isLoading && <Loader/>}
-                    <div ref={lastElement}/>
+                    <div ref={observedElement}/>
                 </div>
             </div>
         </>

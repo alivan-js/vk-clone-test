@@ -9,7 +9,7 @@ const initialState = {
         id: null as Nullable<number>
     },
     page: 1,
-    totalPage: 1,
+    totalItems: 1,
     filter: {
         term: "",
         friend: null as Nullable<boolean>
@@ -41,7 +41,7 @@ export function usersReducer(state = initialState, action: UsersActionsType): In
         }
         case "USERS/TOTAL-NUMBER-SET": {
             return {
-                ...state, totalPage: action.payload
+                ...state, totalItems: action.payload
             }
         }
         case "USERS/PAGE-SET": {
@@ -76,7 +76,6 @@ export const clearUsers = () => ({type: "USERS/USERS-CLEARED"}) as const
 
 export const fetchUsers = (page: number, filter: FilterType): AppThunk => async (dispatch) => {
     dispatch(setFetchingUsers(true))
-    dispatch(setFilter(filter))
     const data = await usersAPI.getUsers(page, filter.term, filter.friend)
     dispatch(setTotalNumber(data.totalCount))
     dispatch(addUsers(data.items))
