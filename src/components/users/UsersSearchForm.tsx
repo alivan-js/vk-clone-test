@@ -33,7 +33,6 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
     });
 
 
-
     const onSubmit = handleSubmit(data => {
 
             const friend = data.friend === "null" ? null : data.friend === "true"
@@ -44,8 +43,8 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
     );
 
     return (
-        <div>
-            <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit}>
+            <div style={{backgroundColor: "white", height: "50px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <input
                     placeholder={"Введите имя пользователя"}
                     {...register("term")}
@@ -55,9 +54,9 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
                     <option value={"true"}>Followed</option>
                     <option value={"false"}>Unfollowed</option>
                 </select>
-                <button className={s.button_login}>Найти</button>
-            </form>
-        </div>
+                <button className={"button_find"}>Найти</button>
+            </div>
+        </form>
     );
 })
 

@@ -14,8 +14,6 @@ const EditableSpan: FC<EditableSpanType> = React.memo(({text, changeText}) => {
         setState(text)
     }, [text])
 
-    // почему когда приходят новые пропсы, не происходит отрисовка?
-
     const changeTextCallback = () => {
         changeText(state)
     }

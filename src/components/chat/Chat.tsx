@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import Message from "./Message";
 import {WithAuthRedirect} from "../hoc/withAuthRedirect";
@@ -6,7 +6,7 @@ import {startMessagesListening, stopMessagesListening} from "../../redux/reducer
 import {useAppSelector} from "../../redux/store";
 import ChatForm from "./ChatForm";
 
-const Chat = () => {
+const Chat: FC = () => {
 
     const dispatch = useDispatch()
     const messages = useAppSelector(state => state.chat.messages)

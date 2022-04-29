@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, {FC} from 'react';
 import {useForm} from "react-hook-form";
 import {useDispatch} from "react-redux";
 import {sendMessageTC} from "../../redux/reducers/chat";
@@ -7,7 +7,7 @@ type ChatFormType = {
     status: "pending" | "ready"
 }
 
-const ChatForm: FC<ChatFormType> = ({status}) => {
+const ChatForm: FC<ChatFormType> = React.memo(({status}) => {
 
     const dispatch = useDispatch()
 
@@ -26,7 +26,6 @@ const ChatForm: FC<ChatFormType> = ({status}) => {
         }
     });
 
-
     const onSubmit = handleSubmit(data => {
         if (data.message.trim()) {
             if (!data.message) {
@@ -38,13 +37,12 @@ const ChatForm: FC<ChatFormType> = ({status}) => {
     })
 
 
-
     return (
         <div className={"chat-input"}>
             <form onSubmit={onSubmit}>
                 <input disabled={status === "pending"}
-                    placeholder={"Напишите сообщение..."}
-                    {...register("message")}
+                       placeholder={"Напишите сообщение..."}
+                       {...register("message")}
                 />
                 <button disabled={status === "pending"}>
                     <img src={"/assets/svg/arrow-big.svg"} alt="sendButton"/>
@@ -52,6 +50,6 @@ const ChatForm: FC<ChatFormType> = ({status}) => {
             </form>
         </div>
     );
-};
+})
 
 export default ChatForm;

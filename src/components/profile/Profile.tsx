@@ -1,6 +1,5 @@
-import React, {ChangeEvent, KeyboardEvent, useCallback, useEffect, useState} from 'react';
+import React, {ChangeEvent, useCallback, useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import Post from "./Post";
 import {addPost, changeStatusTC, fetchUserData, updatePhotoTC} from "../../redux/reducers/profile";
 import s from "./Profile.module.scss"
 import {useParams} from "react-router-dom";
@@ -9,6 +8,8 @@ import EditableSpan from "../EditableSpan";
 import {Nullable, useAppSelector} from "../../redux/store";
 import ProfileEditForm from './ProfileEditForm';
 import ProfileInfo from "./ProfileInfo";
+import PostList from "./PostList";
+import ProfilePostInput from "./ProfilePostInput";
 
 const Profile = () => {
 
@@ -21,9 +22,6 @@ const Profile = () => {
     const profile = useAppSelector(state => state.profile)
     const dispatch = useDispatch()
 
-
-    const [postText, setPostText] = useState("")
-
     const updateStatusCallback = useCallback((status: string) => {
         dispatch(changeStatusTC(status))
     }, [dispatch])
@@ -34,18 +32,11 @@ const Profile = () => {
         }
     }, [params.id])
 
-    const onChangePostHandler = useCallback( (e: ChangeEvent<HTMLInputElement>) => {
-        setPostText(e.currentTarget.value)
-    }, [])
-
-    const onKeyPressPostHandler = useCallback( (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && postText.trim()) {
-            dispatch(addPost(postText.trim()))
-            setPostText("")
-        }
+    const setPost = useCallback((postText: string) => {
+        dispatch(addPost(postText))
     }, [dispatch])
 
-    const onChangePhotoCallback = useCallback( (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangePhotoCallback = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
             dispatch(updatePhotoTC((e.target.files[0])))
         }
@@ -55,8 +46,13 @@ const Profile = () => {
         <div className={s.content}>
             <div className={s.first__column}>
                 <div className={s.first__column__info}>
-                    <label htmlFor="changeImg"><img src={profile.userInfo?.photos?.large || "/assets/svg/user.svg"} alt=""
-                                                    className={s.first__column__info__img}/></label>
+                    {isOwner
+                        ? <label htmlFor="changeImg"><img
+                            src={profile.userInfo?.photos?.large || "/assets/img/avatar.jpg"} alt=""
+                            className={s.first__column__info__img}/></label>
+                        : <img src={profile.userInfo?.photos?.large || "/assets/img/avatar.jpg"} alt=""
+                               className={s.first__column__info__img_1}/>
+                    }
                     {isOwner &&
                         <>
                             <input type={"file"} id={"changeImg"} onChange={onChangePhotoCallback}/>
@@ -64,7 +60,8 @@ const Profile = () => {
                                 onClick={() => {
                                     setEditMode(true)
                                 }}
-                            >Редактировать</button>
+                            >Редактировать
+                            </button>
                         </>
                     }
                 </div>
@@ -95,24 +92,12 @@ const Profile = () => {
                     </div>
                 </div>
                 {isOwner &&
-                    <div className={s.input}>
-                        <img src={"/assets/svg/user.svg"} alt=""/>
-                        <input value={postText}
-                               onChange={onChangePostHandler}
-                               onKeyPress={onKeyPressPostHandler}
-                               placeholder="Что у вас нового?"/>
-                    </div>
+                    <ProfilePostInput setPost={setPost}/>
                 }
-                <div>
-                    <div className={s.posts__header}>{profile.posts.length ? "Мои записи" : "Нет записей"}</div>
-                    <div>
-                        {!profile.posts.length
-                            ? <div className={s.empty__posts}><img src={"/assets/img/logo.png"} alt=""/>
-                                <span>На стене нет пока ни одной записи</span></div>
-                            : profile.posts.map(el => <Post id={el.id} key={el.id} text={el.text}
-                                                            likesCount={el.likesCount}/>)}
-                    </div>
-                </div>
+                {isOwner
+                    ? <PostList posts={profile.posts} profileName={profile.userInfo.fullName}/>
+                    : <PostList posts={[]}/>
+                }
             </div>
         </div>
     );

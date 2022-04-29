@@ -11,7 +11,7 @@ type ProfileEditFormType = {
     setEditMode: (editMode: boolean) => void
 }
 
-const ProfileEditForm: FC<ProfileEditFormType> = ({profile, setEditMode}) => {
+const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMode}) => {
 
     const {
         register,
@@ -274,6 +274,6 @@ const ProfileEditForm: FC<ProfileEditFormType> = ({profile, setEditMode}) => {
             <button className={s.button_login}>Войти</button>
         </form>
     );
-};
+})
 
 export default ProfileEditForm;

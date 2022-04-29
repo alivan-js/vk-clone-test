@@ -14,7 +14,7 @@ import {useOnScreen} from '../../utils/useOnScreen';
 const Users: FC = () => {
 
     const observedElement = useRef() as MutableRefObject<HTMLInputElement>
-
+    const dispatch = useDispatch()
     const page = useAppSelector(state => state.users.page)
     const totalPage = useAppSelector(state => state.users.totalItems)
     const users = useAppSelector(state => state.users.users)
@@ -22,7 +22,6 @@ const Users: FC = () => {
     const filter = useAppSelector(state => state.users.filter)
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const dispatch = useDispatch()
 
     useEffect(() => {
         const parsed = Object.fromEntries(searchParams)

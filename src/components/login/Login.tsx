@@ -9,7 +9,6 @@ import {useAppSelector} from "../../redux/store";
 import {Navigate} from 'react-router-dom';
 import {authTC, loginTC, setCaptcha} from "../../redux/reducers/auth";
 
-
 const Login = () => {
 
     const dispatch = useDispatch()

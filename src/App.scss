@@ -30,8 +30,6 @@
   img {
     margin-right: 11px;
   }
-
-  cursor: pointer;
 }
 
 .header__user_avatar {
@@ -43,6 +41,7 @@
 }
 
 .header__user {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -215,5 +214,39 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
+  color: #8A94A0;
+}
+
+.button_find {
+  padding: 0 10px;
+  height: 32px;
+  background: #E5EBF1;
+  border-radius: 5px;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 20px;
+  color: #8A94A0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.input_find_user{
+  padding: 11px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 17px;
+  color: #8A94A0;
+}
+
+.arrow-header{
+  transform: rotate(90deg);
+}
+
+.logout{
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 17px;
   color: #8A94A0;
 }
