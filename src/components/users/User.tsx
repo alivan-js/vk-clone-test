@@ -35,9 +35,9 @@ const User: FC<UserType> = React.memo(({img, name, isFollowed, id}) => {
                 <NavLink to={`/profile/${id}`}><span className={s.user__name}>{name}</span></NavLink>
                 {isFollowed
                     ? <span className={`${s.user__button} ${isLoading.id === id ? s.user__button__isLoading : ""}`}
-                            onClick={onClickUnfollowHandler}>Unfollow</span>
+                            onClick={onClickUnfollowHandler}>Отписаться</span>
                     : <span className={`${s.user__button} ${isLoading.id === id ? s.user__button__isLoading : ""}`}
-                            onClick={onClickFollowHandler}>Follow</span>
+                            onClick={onClickFollowHandler}>Подписаться</span>
                 }
             </div>
         </div>

@@ -1,6 +1,5 @@
 import React, {FC} from "react";
 import {useForm} from "react-hook-form";
-import s from "./Users.module.scss";
 import {Nullable} from "../../redux/store";
 import {FilterType} from "../../redux/reducers/users";
 
@@ -23,7 +22,6 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
     const {
         register,
         handleSubmit,
-        reset,
     } = useForm<filterType>({
         criteriaMode: "all",
         defaultValues: {
@@ -44,22 +42,25 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
 
     return (
         <form onSubmit={onSubmit}>
-            <div style={{backgroundColor: "white", height: "50px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <div style={{
+                backgroundColor: "white",
+                height: "50px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "0 200px"
+            }}>
                 <input
                     placeholder={"Введите имя пользователя"}
                     {...register("term")}
                 />
                 <select {...register("friend")}>
-                    <option value={"null"}>All</option>
-                    <option value={"true"}>Followed</option>
-                    <option value={"false"}>Unfollowed</option>
+                    <option value={"null"}>Все</option>
+                    <option value={"true"}>Подписки</option>
+                    <option value={"false"}>Другие</option>
                 </select>
                 <button className={"button_find"}>Найти</button>
             </div>
         </form>
     );
 })
-
-function useEffect(arg0: () => void, arg1: any[]) {
-    throw new Error("Function not implemented.");
-}

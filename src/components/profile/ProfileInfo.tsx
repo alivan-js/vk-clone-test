@@ -10,8 +10,8 @@ const ProfileInfo: FC<ProfileFormType> = React.memo(({profile}) => {
 
     return (
         <>
-            <ProfileInfoRow title={"About me"} value={profile.aboutMe}/>
-            <ProfileInfoRow title={"Dream Job"} value={profile.lookingForAJobDescription}/>
+            <ProfileInfoRow title={"Обо мне"} value={profile.aboutMe}/>
+            <ProfileInfoRow title={"Работа мечты"} value={profile.lookingForAJobDescription}/>
             {/*{*/}
             {/*    Object.keys(profile.contacts).map(el => <ProfileInfoRow title={el} value={profile.contacts[el as keyof ContactsType]}/>)*/}
             {/*}*/}

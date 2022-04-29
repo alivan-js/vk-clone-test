@@ -25,7 +25,6 @@ const Login = () => {
     const {
         register,
         formState: {errors},
-        reset,
         handleSubmit
     } = useForm<LoginParamsType>({
         criteriaMode: "all",
@@ -53,10 +52,10 @@ const Login = () => {
                             <input
                                 placeholder={"Email"} className={s.input}
                                 {...register("email", {
-                                    required: "Email is required",
+                                    required: "Укажите email",
                                     pattern: {
                                         value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                        message: "Incorrect email"
+                                        message: "Некорректный email"
                                     }
                                 })}
                             />
@@ -72,12 +71,12 @@ const Login = () => {
                                 }}
                             />
                             <input
-                                placeholder={"Password"} className={s.input} type={"password"}
+                                placeholder={"Пароль"} className={s.input} type={"password"}
                                 {...register("password", {
-                                    required: "Password is required",
+                                    required: "Укажите пароль",
                                     minLength: {
                                         value: 4,
-                                        message: "Password must exceed 3 characters"
+                                        message: "Пароль должен быть не менее 3 символов"
                                     }
                                 })}
                             />
@@ -102,7 +101,7 @@ const Login = () => {
                                     <input
                                         className={s.input}
                                         {...register("captcha", {
-                                            required: "Captcha is required"
+                                            required: "Введите captcha"
                                         })}
                                     />
                                     <ErrorMessage

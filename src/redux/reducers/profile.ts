@@ -23,6 +23,11 @@ export function profileReducer(state = initialState, action: ProfileActionsType)
                 ...state,
                 posts: [...state.posts, {id: state.posts.length + 1, text: action.payload, likesCount: 0}]
             }
+        case "PROFILE/POSTS-CLEARED":
+            return {
+                ...state,
+                posts: []
+            }
         case "PROFILE/POST-LIKED":
             return {
                 ...state,
@@ -59,6 +64,7 @@ export const setProfile = (payload: any) => ({type: "PROFILE/PROFILE-SET", paylo
 export const setLoading = (payload: boolean) => ({type: "PROFILE/LOADING-SET", payload}) as const
 export const setStatus = (status: string | null) => ({type: "PROFILE/STATUS-SET", payload: status}) as const
 export const setPhoto = (photos: PhotosType) => ({type: "PROFILE/PHOTO-SET", photos}) as const
+export const clearPosts = () => ({type: "PROFILE/POSTS-CLEARED"}) as const
 
 // thunks
 
@@ -105,6 +111,7 @@ export type ProfileActionsType =
     | ReturnType<typeof setLoading>
     | ReturnType<typeof setStatus>
     | ReturnType<typeof setPhoto>
+    | ReturnType<typeof clearPosts>
 
 export type PhotosType = {
     small: string | null

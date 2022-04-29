@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useDispatch} from "react-redux";
 import {useAppSelector} from '../../redux/store';
 import {logoutTC} from "../../redux/reducers/auth";
@@ -26,7 +26,7 @@ const Header = () => {
                                  alt={"User avatar"}/>
                             <span className={"logout"} onClick={() => {
                                 dispatch(logoutTC())
-                            }}>Log out</span>
+                            }}>Выйти</span>
                         </div>}
                 </div>
             </div>
