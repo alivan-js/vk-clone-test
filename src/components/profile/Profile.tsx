@@ -117,5 +117,4 @@ const Profile = () => {
     );
 }
 
-// @ts-ignore
 export default WithAuthRedirect(Profile)

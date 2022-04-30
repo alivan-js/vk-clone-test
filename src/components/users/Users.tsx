@@ -1,4 +1,4 @@
-import React, {useRef, MutableRefObject, FC, useCallback, useEffect} from 'react';
+import React, {useRef, MutableRefObject, FC, useCallback, useEffect, useState} from 'react';
 import s from "./Users.module.scss"
 import {useAppSelector} from "../../redux/store";
 import User from './User';
@@ -21,7 +21,7 @@ const Users: FC = () => {
     const isLoading = useAppSelector(state => state.users.isFetchingUsers)
     const filter = useAppSelector(state => state.users.filter)
     const [searchParams, setSearchParams] = useSearchParams()
-
+    const [isFetchedUsers, setIsFetchedUsers] = useState(false)
 
     useEffect(() => {
         const parsed = Object.fromEntries(searchParams)
@@ -30,7 +30,7 @@ const Users: FC = () => {
 
         if (!!parsed.term) actualFilter = {...actualFilter, term: parsed.term as string}
 
-        switch(parsed.friend) {
+        switch (parsed.friend) {
             case "null":
                 actualFilter = {...actualFilter, friend: null}
                 break;
@@ -72,13 +72,17 @@ const Users: FC = () => {
     }, [])
 
     useEffect(() => {
+        if (!isFetchedUsers) {
+            setIsFetchedUsers(true)
+            return
+        }
         dispatch(fetchUsers(page, filter))
     }, [filter, page])
 
     const isOnScreen = useOnScreen(observedElement);
 
     useEffect(() => {
-        if ((page < (Math.ceil(totalPage/10))) && isOnScreen) {
+        if ((page < (Math.ceil(totalPage / 10))) && isOnScreen) {
             dispatch(setPage(page + 1))
         }
     }, [isOnScreen])
