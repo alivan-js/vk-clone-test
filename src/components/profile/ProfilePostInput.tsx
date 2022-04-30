@@ -10,6 +10,8 @@ const ProfilePostInput: FC<ProfilePostInputType> = React.memo(({setPost, userImg
 
     const [postText, setPostText] = useState("")
 
+    // calbacks
+
     const onChangePostHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setPostText(e.currentTarget.value)
     }, [])

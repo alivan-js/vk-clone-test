@@ -17,6 +17,8 @@ const User: FC<UserType> = React.memo(({img, name, isFollowed, id}) => {
     const dispatch = useDispatch()
     const isLoading = useAppSelector(state => state.users.isFollowingInProgress)
 
+    // callbacks
+
     const onClickFollowHandler = () => {
         dispatch(fetchFollowing(id))
     }

@@ -11,13 +11,12 @@ type UsersSearchFormType = {
     changeFilter: (filter: FilterType) => void
 }
 
+type filterType = {
+    term: string
+    friend: string
+}
 
 export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, changeFilter}) => {
-
-    type filterType = {
-        term: string
-        friend: string
-    }
 
     const {
         register,
@@ -28,15 +27,14 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
             term: filter.term,
             friend: JSON.stringify(filter.friend)
         }
-    });
+    })
 
 
     const onSubmit = handleSubmit(data => {
-
             const friend = data.friend === "null" ? null : data.friend === "true"
             changeFilter({term: data.term, friend})
         }
-    );
+    )
 
     return (
         <form onSubmit={onSubmit}>

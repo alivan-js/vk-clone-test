@@ -23,14 +23,10 @@ const Profile = () => {
     const params = useParams<"id">()
     const ownerId = useAppSelector<Nullable<number>>(state => state.auth.userData.id)
     const [editMode, setEditMode] = useState(false)
-
     const isOwner = Number(params.id) === ownerId
     const profile = useAppSelector(state => state.profile)
     const dispatch = useDispatch()
 
-    const updateStatusCallback = useCallback((status: string) => {
-        dispatch(changeStatusTC(status))
-    }, [dispatch])
 
     useEffect(() => {
         if (params.id !== undefined) {
@@ -43,7 +39,13 @@ const Profile = () => {
             dispatch(clearPosts())
         }
 
-    }, [params.id])
+    }, [dispatch, params.id])
+
+    // callbacks
+
+    const updateStatusCallback = useCallback((status: string) => {
+        dispatch(changeStatusTC(status))
+    }, [dispatch])
 
     const setPost = useCallback((postText: string) => {
         dispatch(addPost(postText))
@@ -54,6 +56,7 @@ const Profile = () => {
             dispatch(updatePhotoTC((e.target.files[0])))
         }
     }, [dispatch])
+
 
 
     return (

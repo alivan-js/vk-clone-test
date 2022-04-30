@@ -28,6 +28,8 @@ const Chat: FC = () => {
         },
         [messages])
 
+    // callbacks
+
     const onScrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         const element = e.currentTarget
         if (Math.abs((element.scrollHeight - element.scrollTop) - element.clientHeight) < 500) {
@@ -39,12 +41,14 @@ const Chat: FC = () => {
 
     return (
         <div className={"chat-content"}>
-            <div className={"chat-message-top-block"}></div>
+            <div className={"chat-message-top-block"}/>
             <div className={"chat-text"} onScroll={onScrollHandler}>
                 {messages.map((el) =>
-                    <Message key={el.id} text={el.message} photo={el.photo} userName={el.userName}
-                             userId={el.userId}/>)
-                }
+                    <Message key={el.id}
+                             text={el.message}
+                             photo={el.photo}
+                             userName={el.userName}
+                             userId={el.userId}/>)}
                 <div ref={chatAnchorRef}/>
             </div>
             <ChatForm status={status}/>

@@ -1,7 +1,7 @@
 import {Dispatch} from "redux";
 import {chatAPI} from "../../utils/chat-api";
 import {AppThunk} from "../store";
-import { v1 } from 'uuid'
+import {v1} from 'uuid'
 
 const intitialState = {
     messages: [] as MessageTypeWithID[],
@@ -11,7 +11,11 @@ const intitialState = {
 export function chatReducer(state = intitialState, action: ChatActionsType): InitialStateType {
     switch (action.type) {
         case "CHAT/MESSAGES-SET": {
-            return {...state, messages: [...state.messages, ...action.payload.map(el => ({...el, id: v1()})).filter((el, index, arr) => index >= arr.length - 20)]}
+            return {
+                ...state, messages: [...state.messages, ...action.payload
+                    .map(el => ({...el, id: v1()}))
+                    .filter((el, index, arr) => index >= arr.length - 20)]
+            }
         }
         case "CHAT/MESSAGES-CLEARED": {
             return {...state, messages: []}
@@ -66,7 +70,7 @@ export const stopMessagesListening = (): AppThunk => (dispatch) => {
     dispatch(clearMessages())
 }
 
-export const sendMessageTC = (message: string): AppThunk => (dispatch) => {
+export const sendMessageTC = (message: string): AppThunk => () => {
     chatAPI.sendMessage(message)
 }
 
@@ -81,7 +85,7 @@ export type MessageType = {
     photo: string,
 }
 
-type MessageTypeWithID = MessageType & {id: string}
+type MessageTypeWithID = MessageType & { id: string }
 
 export type StatusType = "pending" | "ready" | "error"
 

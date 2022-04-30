@@ -14,6 +14,8 @@ const EditableSpan: FC<EditableSpanType> = React.memo(({text, changeText}) => {
         setState(text)
     }, [text])
 
+    // callbacks
+
     const changeTextCallback = () => {
         changeText(state)
     }
@@ -22,7 +24,7 @@ const EditableSpan: FC<EditableSpanType> = React.memo(({text, changeText}) => {
         setState(e.currentTarget.value)
     }
 
-    const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => {
+    const onBlurHandler = () => {
         changeTextCallback()
         setEditMode(false)
     }

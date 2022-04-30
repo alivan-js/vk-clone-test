@@ -1,8 +1,8 @@
 import {MessageType, StatusType} from "../redux/reducers/chat";
 
 let subscribers = {
-    "message-received" : [] as MessageReceivedSubscriberType[],
-    "status-changed" : [] as StatusChangedSubscriberType[],
+    "message-received": [] as MessageReceivedSubscriberType[],
+    "status-changed": [] as StatusChangedSubscriberType[],
 }
 
 
@@ -47,18 +47,18 @@ export const chatAPI = {
     },
     stop() {
         subscribers["message-received"] = []
-        subscribers[ "status-changed"] = []
+        subscribers["status-changed"] = []
         ws?.removeEventListener("close", closeHandler)
         ws?.removeEventListener("message", messageHandler)
         ws?.addEventListener("open", openStatusHandler)
         ws?.addEventListener("error", errorHandlerHandler)
         ws?.close()
     },
-    subscribe(eventName : EventNamesType, callback: MessageReceivedSubscriberType | StatusChangedSubscriberType) {
+    subscribe(eventName: EventNamesType, callback: MessageReceivedSubscriberType | StatusChangedSubscriberType) {
         // @ts-ignore
         subscribers[eventName].push(callback)
     },
-    unsubscribe(eventName : EventNamesType, callback: MessageReceivedSubscriberType | StatusChangedSubscriberType) {
+    unsubscribe(eventName: EventNamesType, callback: MessageReceivedSubscriberType | StatusChangedSubscriberType) {
         // @ts-ignore
         subscribers[eventName] = subscribers[eventName].filter(el => el !== callback)
     },

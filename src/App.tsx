@@ -15,10 +15,9 @@ const App: FC = () => {
 
     const dispatch = useDispatch()
     const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
+    let id: Nullable<number> | string = useAppSelector<Nullable<number>>(state => state.auth.userData.id)
 
-    const catchUnhandledErrors = (e: PromiseRejectionEvent): void => {
-        alert("Some error occurred")
-    }
+
 
     useEffect(() => {
             window.addEventListener("unhandledrejection", catchUnhandledErrors)
@@ -33,7 +32,11 @@ const App: FC = () => {
     }, [])
 
 
-    let id: Nullable<number> | string = useAppSelector<Nullable<number>>(state => state.auth.userData.id)
+
+    const catchUnhandledErrors = (e: PromiseRejectionEvent): void => {
+        alert("Some error occurred")
+    }
+
 
     if (!isInitialized) {
         return <Loader/>

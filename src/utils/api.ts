@@ -3,7 +3,6 @@ import {Nullable} from "../redux/store";
 import {EditParamsType, PhotosType} from "../redux/reducers/profile";
 
 
-
 const instance = axios.create({
     withCredentials: true,
     baseURL: "https://social-network.samuraijs.com/api/1.0/",
@@ -33,7 +32,7 @@ export const authAPI = {
         return instance.delete<CommonResponseType<{}>>("/auth/login")
     },
     captcha() {
-        return instance.get<{url: string}>("/security/get-captcha-url")
+        return instance.get<{ url: string }>("/security/get-captcha-url")
     }
 }
 

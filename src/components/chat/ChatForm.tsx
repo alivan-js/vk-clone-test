@@ -7,13 +7,13 @@ type ChatFormType = {
     status: StatusType
 }
 
+type MessageType = {
+    message: string
+}
+
 const ChatForm: FC<ChatFormType> = React.memo(({status}) => {
 
     const dispatch = useDispatch()
-
-    type MessageType = {
-        message: string
-    }
 
     const {
         register,
@@ -35,7 +35,6 @@ const ChatForm: FC<ChatFormType> = React.memo(({status}) => {
         }
         reset()
     })
-
 
     return (
         <div className={"chat-input"}>

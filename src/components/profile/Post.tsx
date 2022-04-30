@@ -8,7 +8,6 @@ type PostType = {
     likesCount: number
     id: number
     profileName: string | undefined
-    //
 }
 
 const Post: FC<PostType> = React.memo(({text, likesCount, id, profileName}) => {
@@ -36,7 +35,8 @@ const Post: FC<PostType> = React.memo(({text, likesCount, id, profileName}) => {
             <div className={s.post__socials}>
                 {clicked
                     ? <img src="/assets/svg/liked.svg" alt="liked" style={{width: "24px", height: "24px"}}/>
-                    : <img onClick={onclickLikeHandler} src="/assets/svg/like.svg" alt="like"  style={{marginRight: "2px"}}/>
+                    : <img onClick={onclickLikeHandler} src="/assets/svg/like.svg" alt="like"
+                           style={{marginRight: "2px"}}/>
                 }
                 {likesCount}
             </div>

@@ -22,6 +22,7 @@ const Users: FC = () => {
     const filter = useAppSelector(state => state.users.filter)
     const [searchParams, setSearchParams] = useSearchParams()
     const [isFetchedUsers, setIsFetchedUsers] = useState(false)
+    const isOnScreen = useOnScreen(observedElement);
 
     useEffect(() => {
         const parsed = Object.fromEntries(searchParams)
@@ -43,7 +44,7 @@ const Users: FC = () => {
         }
 
         dispatch(fetchUsers(1, actualFilter))
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
 
@@ -55,13 +56,6 @@ const Users: FC = () => {
         setSearchParams({term: query.term ? query.term : "", friend: query.friend ? query.friend : null})
 
     }, [filter])
-
-
-    const changeFilterCallback = useCallback((filter: FilterType) => {
-        dispatch(setFilter(filter))
-        dispatch(clearUsers())
-        dispatch(setPage(1))
-    }, [dispatch, filter])
 
     useEffect(() => {
         return () => {
@@ -79,13 +73,19 @@ const Users: FC = () => {
         dispatch(fetchUsers(page, filter))
     }, [filter, page])
 
-    const isOnScreen = useOnScreen(observedElement);
-
     useEffect(() => {
         if ((page < (Math.ceil(totalPage / 10))) && isOnScreen) {
             dispatch(setPage(page + 1))
         }
     }, [isOnScreen])
+
+    // callbacks
+
+    const changeFilterCallback = useCallback((filter: FilterType) => {
+        dispatch(setFilter(filter))
+        dispatch(clearUsers())
+        dispatch(setPage(1))
+    }, [dispatch, filter])
 
     return (
         <>
