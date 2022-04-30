@@ -17,7 +17,7 @@ const App: FC = () => {
     const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
 
     const catchUnhandledErrors = (e: PromiseRejectionEvent): void => {
-        alert("Some error occured")
+        alert("Some error occurred")
     }
 
     useEffect(() => {

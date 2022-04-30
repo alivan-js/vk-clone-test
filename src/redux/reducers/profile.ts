@@ -13,7 +13,7 @@ const initialState = {
     posts: [] as PostType[],
     userInfo: {} as ProfileUserInfoType,
     isLoading: false,
-    status: null as Nullable<string>
+    status: null as Nullable<string>,
 }
 
 export function profileReducer(state = initialState, action: ProfileActionsType): initialStateType {

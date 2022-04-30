@@ -34,9 +34,7 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
     const onSubmit = handleSubmit(data => {
 
             const friend = data.friend === "null" ? null : data.friend === "true"
-
             changeFilter({term: data.term, friend})
-
         }
     );
 

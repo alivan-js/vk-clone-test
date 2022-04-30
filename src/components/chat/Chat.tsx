@@ -14,8 +14,6 @@ const Chat: FC = () => {
     const chatAnchorRef = useRef<HTMLDivElement>(null)
     const [isAutoScroll, setIsAutoScroll] = useState(true)
 
-    console.log(status)
-
     useEffect(() => {
         dispatch(startMessagesListening())
         return () => {
@@ -44,7 +42,7 @@ const Chat: FC = () => {
             <div className={"chat-message-top-block"}></div>
             <div className={"chat-text"} onScroll={onScrollHandler}>
                 {messages.map((el) =>
-                    <Message key={new Date().getDate()} text={el.message} photo={el.photo} userName={el.userName}
+                    <Message key={el.id} text={el.message} photo={el.photo} userName={el.userName}
                              userId={el.userId}/>)
                 }
                 <div ref={chatAnchorRef}/>

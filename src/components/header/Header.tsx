@@ -9,6 +9,7 @@ const Header = () => {
     const dispatch = useDispatch()
     const isLogin = useAppSelector(state => state.auth.isLogin)
     const navigate = useNavigate();
+    const userImg = useAppSelector(state => state.app.userImg)
 
     return (
         <header className="header">
@@ -22,7 +23,7 @@ const Header = () => {
                                  onClick={() => {
                                      navigate("/profile")
                                  }}
-                                 src={"/assets/img/avatar.jpg"}
+                                 src={userImg || "/assets/img/avatar.jpg"}
                                  alt={"User avatar"}/>
                             <span className={"logout"} onClick={() => {
                                 dispatch(logoutTC())

@@ -3,9 +3,10 @@ import s from "./Profile.module.scss";
 
 type ProfilePostInputType = {
     setPost: (text: string) => void
+    userImg: string | null
 }
 
-const ProfilePostInput: FC<ProfilePostInputType> = React.memo(({setPost}) => {
+const ProfilePostInput: FC<ProfilePostInputType> = React.memo(({setPost, userImg}) => {
 
     const [postText, setPostText] = useState("")
 
@@ -22,7 +23,8 @@ const ProfilePostInput: FC<ProfilePostInputType> = React.memo(({setPost}) => {
 
     return (
         <div className={s.input}>
-            <img src={"/assets/img/avatar.jpg"} alt=""/>
+            {!postText && <img src={userImg || "/assets/img/avatar.jpg"} alt=""/>
+            }
             <input value={postText}
                    onChange={onChangePostHandler}
                    onKeyPress={onKeyPressPostHandler}

@@ -65,6 +65,7 @@ export const authTC = (): AppThunk => (dispatch) => {
             if (res.data.resultCode === ResultCode.Success) {
                 dispatch(setUserData(res.data.data))
                 dispatch(setIsLoggedIn())
+                return res.data.data.id
             }
         }
     )

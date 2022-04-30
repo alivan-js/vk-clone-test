@@ -25,7 +25,6 @@ const Profile = () => {
     const [editMode, setEditMode] = useState(false)
 
     const isOwner = Number(params.id) === ownerId
-
     const profile = useAppSelector(state => state.profile)
     const dispatch = useDispatch()
 
@@ -107,7 +106,7 @@ const Profile = () => {
                     </div>
                 </div>
                 {isOwner &&
-                    <ProfilePostInput setPost={setPost}/>
+                    <ProfilePostInput setPost={setPost} userImg={profile.userInfo.photos?.small}/>
                 }
                 {isOwner
                     ? <PostList posts={profile.posts} profileName={profile.userInfo.fullName}/>
@@ -118,4 +117,5 @@ const Profile = () => {
     );
 }
 
+// @ts-ignore
 export default WithAuthRedirect(Profile)
