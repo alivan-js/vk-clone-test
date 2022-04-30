@@ -1,8 +1,7 @@
 import axios from "axios";
 import {Nullable} from "../redux/store";
 import {EditParamsType, PhotosType} from "../redux/reducers/profile";
-import {MessageType} from "../redux/reducers/chat";
-import message from "../components/chat/Message";
+
 
 
 const instance = axios.create({

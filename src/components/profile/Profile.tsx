@@ -1,6 +1,13 @@
 import React, {ChangeEvent, useCallback, useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import {addPost, changeStatusTC, fetchUserData, updatePhotoTC} from "../../redux/reducers/profile";
+import {
+    addPost,
+    changeStatusTC, clearPosts,
+    fetchUserData,
+    setProfile,
+    setStatus,
+    updatePhotoTC
+} from "../../redux/reducers/profile";
 import s from "./Profile.module.scss"
 import {useParams} from "react-router-dom";
 import {WithAuthRedirect} from "../hoc/withAuthRedirect";
@@ -30,6 +37,13 @@ const Profile = () => {
         if (params.id !== undefined) {
             dispatch(fetchUserData(params.id))
         }
+
+        return () => {
+            dispatch(setProfile({}))
+            dispatch(setStatus(""))
+            dispatch(clearPosts())
+        }
+
     }, [params.id])
 
     const setPost = useCallback((postText: string) => {
@@ -41,6 +55,7 @@ const Profile = () => {
             dispatch(updatePhotoTC((e.target.files[0])))
         }
     }, [dispatch])
+
 
     return (
         <div className={s.content}>
@@ -76,13 +91,13 @@ const Profile = () => {
                                     ?
                                     <EditableSpan
                                         text={profile.status || "Установить статус"} changeText={updateStatusCallback}/>
-                                    : <span>{profile.status}</span>
+                                    : <span style={{width: "100%"}}>{profile.status}</span>
                                 }
 
                             </div>
                         </div>
                         <div
-                            className={s.description__status}>{profile.userInfo.lookingForAJob && "looking for a job"}</div>
+                            className={s.description__status}>{profile.userInfo.lookingForAJob && "в поиске работы"}</div>
                     </div>
                     <div className={s.description__details}>
                         {editMode

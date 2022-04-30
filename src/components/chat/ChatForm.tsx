@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
 import {useForm} from "react-hook-form";
 import {useDispatch} from "react-redux";
-import {sendMessageTC} from "../../redux/reducers/chat";
+import {sendMessageTC, StatusType} from "../../redux/reducers/chat";
 
 type ChatFormType = {
-    status: "pending" | "ready"
+    status: StatusType
 }
 
 const ChatForm: FC<ChatFormType> = React.memo(({status}) => {
