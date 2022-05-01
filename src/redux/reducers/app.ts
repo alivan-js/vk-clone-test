@@ -33,8 +33,12 @@ export const initializeAppTC = (): AppThunk => (dispatch) => {
     let promise = dispatch(authTC())
     Promise.all([promise]).then(
         (value) => {
+            debugger
             dispatch(setInitialized())
-            value && dispatch(setUserDataTC(value[0]))
+            if (value.length) {
+                // @ts-ignore
+                value[0] && dispatch(setUserDataTC(value[0]))
+            }
         }
     )
 }

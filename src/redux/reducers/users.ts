@@ -16,7 +16,7 @@ const initialState = {
     }
 }
 
-export function usersReducer(state = initialState, action: UsersActionsType): InitialStateType {
+export function usersReducer(state = initialState, action: UsersActionsType): UsersInitialStateType {
     switch (action.type) {
         case "USERS/USERS-ADDED": {
             return {
@@ -98,7 +98,7 @@ export const fetchUnfollowing = (id: number): AppThunk => async (dispatch) => {
 
 // types
 
-type InitialStateType = typeof initialState
+export type UsersInitialStateType = typeof initialState
 
 export type FilterType = {
     term: string,

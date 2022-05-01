@@ -14,12 +14,17 @@ const Chat: FC = () => {
     const chatAnchorRef = useRef<HTMLDivElement>(null)
     const [isAutoScroll, setIsAutoScroll] = useState(true)
 
+    console.log(status
+    )
+
+    debugger
+
     useEffect(() => {
         dispatch(startMessagesListening())
         return () => {
             dispatch(stopMessagesListening())
         }
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
             if (isAutoScroll) {

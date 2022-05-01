@@ -14,7 +14,7 @@ export const usersAPI = {
         return instance.get<GetUsersResponseType>(`users?page=${page}&term=${term}&friend=${friend}`).then((response) => response.data)
     },
     follow(id: number) {
-        return instance.post<boolean>(`follow/${id}`).then((response) => response.data)
+        return instance.post<CommonResponseType<{}>>(`follow/${id}`).then((response) => response.data)
     },
     unfollow(id: number) {
         return instance.delete<CommonResponseType<{}>>(`follow/${id}`).then((response) => response.data)
@@ -81,7 +81,7 @@ export type UserInListType = {
     followed: boolean
 }
 
-type CommonResponseType<T> = {
+export type CommonResponseType<T> = {
     data: T
     messages: Array<string>
     fieldsErrors: Array<string>
