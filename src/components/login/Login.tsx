@@ -20,7 +20,7 @@ const Login = () => {
         return () => {
             dispatch(setCaptcha(""))
         }
-    }, [])
+    }, [dispatch])
 
     const {
         register,
@@ -47,7 +47,9 @@ const Login = () => {
                 <main className={s.main}>
                     <div className={s.content}>
                         <div className={s.header}>Вход Насвязи</div>
-                        <div className={s.message}>Чтобы просмотреть эту страницу, нужно зайти на сайт.</div>
+                        <div className={s.message}>Чтобы зайти, сначала зарегистрируйтесь
+                            <a href="https://social-network.samuraijs.com/" target="_blank">здесь</a>.
+                        </div>
                         <form onSubmit={onSubmit} className={s.form}>
                             <input
                                 placeholder={"Email"} className={s.input}

@@ -1,15 +1,32 @@
 import React, {FC, useEffect} from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import './App.scss';
-import Chat from './components/chat/Chat';
 import Layout from "./components/Layout";
-import Profile from './components/profile/Profile';
-import Users from "./components/users/Users";
 import {Nullable, useAppSelector} from './redux/store';
 import Login from './components/login/Login';
 import {useDispatch} from "react-redux";
 import {initializeAppTC} from "./redux/reducers/app";
 import {ErrorSnackbar} from "./components/ErrorSnackBar";
+
+const Chat = React.lazy(() => import('./components/chat/Chat'));
+const Users = React.lazy(() => import('./components/users/Users'));
+const Profile = React.lazy(() => import('./components/profile/Profile'));
+
+const SuspendedChat = <React.Suspense fallback={<div></div>}>
+    <Chat/>
+</React.Suspense>
+
+// const SuspendedChat = WithSuspense(Chat)
+
+// Прчему не работает хок?
+
+const SuspendedProfile = <React.Suspense fallback={<div></div>}>
+    <Profile/>
+</React.Suspense>
+
+const SuspendedUsers = <React.Suspense fallback={<div></div>}>
+    <Users/>
+</React.Suspense>
 
 const App: FC = () => {
 
@@ -17,24 +34,9 @@ const App: FC = () => {
     const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
     let id: Nullable<number> | string = useAppSelector<Nullable<number>>(state => state.auth.userData.id)
 
-
-    useEffect(() => {
-            window.addEventListener("unhandledrejection", catchUnhandledErrors)
-            return () => {
-                window.removeEventListener("unhandledrejection", catchUnhandledErrors)
-            }
-        },
-        [])
-
     useEffect(() => {
         dispatch(initializeAppTC())
-    }, [])
-
-
-    const catchUnhandledErrors = (e: PromiseRejectionEvent): void => {
-        alert("Some error occurred")
-    }
-
+    }, [dispatch])
 
     if (!isInitialized) {
         return <div/>
@@ -47,11 +49,11 @@ const App: FC = () => {
                 <Route path={"/login"} element={<Login/>}/>
                 <Route path={"/"} element={<Layout/>}>
                     <Route index element={<Navigate to={"profile"}/>}/>
-                    <Route path={"/chat"} element={<Chat/>}/>
+                    <Route path={"/chat"} element={SuspendedChat}/>
                     <Route path={"/profile"} element={<Navigate to={"/profile/" + id}/>}/>
-                    <Route path={"/profile/:id"} element={<Profile/>}/>
-                    <Route path={"/users"} element={<Users/>}/>
-                    <Route path={"*"} element={<Profile/>}/>
+                    <Route path={"/profile/:id"} element={SuspendedProfile}/>
+                    <Route path={"/users"} element={SuspendedUsers}/>
+                    <Route path={"*"} element={SuspendedProfile}/>
                 </Route>
             </Routes>
         </>
