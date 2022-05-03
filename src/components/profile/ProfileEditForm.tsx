@@ -5,11 +5,14 @@ import {useForm} from "react-hook-form";
 import {EditParamsType, updateProfileTC} from "../../redux/reducers/profile";
 import {useDispatch} from "react-redux";
 import {ErrorMessage} from "@hookform/error-message";
+import styles from "./Profile.module.scss";
 
 type ProfileEditFormType = {
     profile: ProfileUserInfoType
     setEditMode: (editMode: boolean) => void
 }
+
+type valuesType = "aboutMe" | "contacts" | "lookingForAJob" | "lookingForAJobDescription" | "fullName" | "userId" | "contacts.github" | "contacts.vk" | "contacts.facebook" | "contacts.instagram" | "contacts.twitter" | "contacts.website" | "contacts.youtube" | "contacts.mainLink"
 
 const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMode}) => {
 
@@ -46,16 +49,38 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
         }
     );
 
-    return (
-        <form onSubmit={onSubmit} className={s.form}>
-            <div style={{display: "flex"}}>
-                <div>{"Dream Job"}</div>
+    const rowExample = (name: valuesType, desc: string) => {
+        return (
+            <div className={styles.description__details__body}>
+                <div className={styles.description__details__key}>{desc}</div>
                 <input style={{border: "1px solid black", marginLeft: "5px"}}
-                       {...register("lookingForAJobDescription")}
+                       {...register(name)}
                 />
             </div>
-            <div style={{display: "flex"}}>
-                <div>{"Are you looking for a job?"}</div>
+        )
+    }
+
+    const rowExampleWithPattern = (name: valuesType, desc: string, patternValue?: RegExp, patternMessage?: string) => {
+        return (
+            <div className={styles.description__details__body}>
+                <div className={styles.description__details__key}>{desc}</div>
+                <input style={{border: "1px solid black", marginLeft: "5px"}}
+                       {...register(name, {
+                           pattern: {
+                               value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/,
+                               message: "Incorrect url"
+                           }
+                       })}
+                />
+            </div>
+        )
+    }
+
+    return (
+        <form onSubmit={onSubmit} className={s.form}>
+            {rowExample("lookingForAJobDescription", "Dream Job")}
+            <div className={styles.description__details__body}>
+                <div  className={styles.description__details__key}>{"Are you looking for a job?"}</div>
                 <div>
                     <input
                         type={"checkbox"}
@@ -63,35 +88,9 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
                     />
                 </div>
             </div>
-            <div style={{display: "flex"}}>
-                <div>{"Name"}</div>
-                <div>
-                    <input style={{border: "1px solid black", marginLeft: "5px"}}
-                           {...register("fullName")}
-                    />
-                </div>
-            </div>
-            <div style={{display: "flex"}}>
-                <div>{"About me"}</div>
-                <div>
-                    <input style={{border: "1px solid black", marginLeft: "5px"}}
-                           {...register("aboutMe")}
-                    />
-                </div>
-            </div>
-            <div style={{display: "flex"}}>
-                <div>{"Github"}</div>
-                <div>
-                    <input style={{border: "1px solid black", marginLeft: "5px"}}
-                           {...register("contacts.github", {
-                               pattern: {
-                                   value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/,
-                                   message: "Incorrect url"
-                               }
-                           })}
-                    />
-                </div>
-            </div>
+            {rowExample("fullName", "Name")}
+            {rowExample("aboutMe", "About me")}
+            {rowExampleWithPattern("contacts.github", "Github", /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/, "Incorrect url")}
             <ErrorMessage
                 errors={errors}
                 name="contacts.github"
@@ -103,19 +102,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
                         : null;
                 }}
             />
-            <div style={{display: "flex"}}>
-                <div>{"VK"}</div>
-                <div>
-                    <input style={{border: "1px solid black", marginLeft: "5px"}}
-                           {...register("contacts.vk", {
-                               pattern: {
-                                   value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/,
-                                   message: "Incorrect url"
-                               }
-                           })}
-                    />
-                </div>
-            </div>
+            {rowExampleWithPattern("contacts.vk", "VK", /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/, "Incorrect url")}
             <ErrorMessage
                 errors={errors}
                 name="contacts.vk"
@@ -127,19 +114,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
                         : null;
                 }}
             />
-            <div style={{display: "flex"}}>
-                <div>{"Facebook"}</div>
-                <div>
-                    <input style={{border: "1px solid black", marginLeft: "5px"}}
-                           {...register("contacts.facebook", {
-                               pattern: {
-                                   value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/,
-                                   message: "Incorrect url"
-                               }
-                           })}
-                    />
-                </div>
-            </div>
+            {rowExampleWithPattern("contacts.facebook", "Facebook", /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/, "Incorrect url")}
             <ErrorMessage
                 errors={errors}
                 name="contacts.facebook"
@@ -151,19 +126,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
                         : null;
                 }}
             />
-            <div style={{display: "flex"}}>
-                <div>{"Instagram"}</div>
-                <div>
-                    <input style={{border: "1px solid black", marginLeft: "5px"}}
-                           {...register("contacts.instagram", {
-                               pattern: {
-                                   value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/,
-                                   message: "Incorrect url"
-                               }
-                           })}
-                    />
-                </div>
-            </div>
+            {rowExampleWithPattern("contacts.instagram", "Instagram", /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/, "Incorrect url")}
             <ErrorMessage
                 errors={errors}
                 name="contacts.instagram"
@@ -175,19 +138,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
                         : null;
                 }}
             />
-            <div style={{display: "flex"}}>
-                <div>{"Twitter"}</div>
-                <div>
-                    <input style={{border: "1px solid black", marginLeft: "5px"}}
-                           {...register("contacts.twitter", {
-                               pattern: {
-                                   value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/,
-                                   message: "Incorrect url"
-                               }
-                           })}
-                    />
-                </div>
-            </div>
+            {rowExampleWithPattern("contacts.twitter", "Twitter", /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/, "Incorrect url")}
             <ErrorMessage
                 errors={errors}
                 name="contacts.twitter"
@@ -199,19 +150,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
                         : null;
                 }}
             />
-            <div style={{display: "flex"}}>
-                <div>{"Website"}</div>
-                <div>
-                    <input style={{border: "1px solid black", marginLeft: "5px"}}
-                           {...register("contacts.website", {
-                               pattern: {
-                                   value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/,
-                                   message: "Incorrect url"
-                               }
-                           })}
-                    />
-                </div>
-            </div>
+            {rowExampleWithPattern("contacts.website", "Website", /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/, "Incorrect url")}
             <ErrorMessage
                 errors={errors}
                 name="contacts.website"
@@ -223,19 +162,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
                         : null;
                 }}
             />
-            <div style={{display: "flex"}}>
-                <div>{"Youtube"}</div>
-                <div>
-                    <input style={{border: "1px solid black", marginLeft: "5px"}}
-                           {...register("contacts.youtube", {
-                               pattern: {
-                                   value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/,
-                                   message: "Incorrect url"
-                               }
-                           })}
-                    />
-                </div>
-            </div>
+            {rowExampleWithPattern("contacts.youtube", "Youtube", /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/, "Incorrect url")}
             <ErrorMessage
                 errors={errors}
                 name="contacts.youtube"
@@ -247,19 +174,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
                         : null;
                 }}
             />
-            <div style={{display: "flex"}}>
-                <div>{"MainLink"}</div>
-                <div>
-                    <input style={{border: "1px solid black", marginLeft: "5px"}}
-                           {...register("contacts.mainLink", {
-                               pattern: {
-                                   value: /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/,
-                                   message: "Incorrect url"
-                               }
-                           })}
-                    />
-                </div>
-            </div>
+            {rowExampleWithPattern("contacts.mainLink", "MainLink", /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/, "Incorrect url")}
             <ErrorMessage
                 errors={errors}
                 name="contacts.mainLink"

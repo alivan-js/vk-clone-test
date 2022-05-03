@@ -21,10 +21,6 @@ const Users: FC = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [isFetchedUsers, setIsFetchedUsers] = useState(false)
     const isOnScreen = useOnScreen(observedElement);
-    const isLoading = useAppSelector(state => state.profile.isLoading)
-
-    console.log(isFetchedUsers)
-
 
     useEffect(() => {
         const parsed = Object.fromEntries(searchParams)
