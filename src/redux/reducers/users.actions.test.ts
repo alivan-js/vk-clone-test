@@ -31,9 +31,7 @@ beforeEach(() => {
                 uniqueUrlName: "Alex"
             },
         ],
-        isFetchingUsers: false,
         isFollowingInProgress: {
-            status: false,
             id: null
         },
         page: 1,

@@ -1,5 +1,8 @@
 import {AppThunk, Nullable} from "../store";
 import {authAPI, LoginParamsType, ResultCode} from "../../utils/api";
+import {handleServerNetworkError} from "../../utils/error";
+import {AxiosError} from "axios";
+import {setIsLoading} from "./app";
 
 const initialState = {
     isLogin: false,
@@ -40,33 +43,56 @@ export const setCaptcha = (url: string) => ({type: "AUTH/CAPTCHA-SET", url}) as 
 
 // thunks
 
-export const loginTC = (data: LoginParamsType): AppThunk => async (dispatch) => {
-    const res = await authAPI.login(data)
-
-    if (res.data.resultCode === ResultCode.Success) {
-        dispatch(authTC())
-    } else if (res.data.resultCode === ResultCode.Captcha) {
-        dispatch(getCaptchaTC())
-    }
+export const loginTC = (data: LoginParamsType): AppThunk => (dispatch) => {
+    dispatch(setIsLoading(true))
+    authAPI.login(data).then(res => {
+        if (res.data.resultCode === ResultCode.Success) {
+            dispatch(authTC())
+        } else if (res.data.resultCode === ResultCode.Captcha) {
+            dispatch(getCaptchaTC())
+            handleServerNetworkError(dispatch, res.data.messages[0])
+        } else {
+            handleServerNetworkError(dispatch, res.data.messages[0])
+        }
+    }).catch((err: AxiosError) => {
+        handleServerNetworkError(dispatch, err.message)
+    }).finally(() => {
+            dispatch(setIsLoading(false))
+        }
+    )
 }
 
-export const logoutTC = (): AppThunk => async (dispatch) => {
-    const res = await authAPI.logout()
-
-    if (res.data.resultCode === ResultCode.Success) {
-        dispatch(setIsLoggedOut())
-    } else {
-
-    }
+export const logoutTC = (): AppThunk => (dispatch) => {
+    dispatch(setIsLoading(true))
+    authAPI.logout().then(res => {
+        if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setIsLoggedOut())
+        } else {
+            handleServerNetworkError(dispatch, res.data.messages[0])
+        }
+    }).catch((err: AxiosError) => {
+        handleServerNetworkError(dispatch, err.message)
+    }).finally(() => {
+            dispatch(setIsLoading(false))
+        }
+    )
 }
 
 export const authTC = (): AppThunk => (dispatch) => {
+    dispatch(setIsLoading(true))
     return authAPI.me().then((res) => {
             if (res.data.resultCode === ResultCode.Success) {
                 dispatch(setUserData(res.data.data))
                 dispatch(setIsLoggedIn())
                 return res.data.data.id
+            } else {
+                handleServerNetworkError(dispatch, res.data.messages[0])
             }
+        }
+    ).catch((err: AxiosError) => {
+        handleServerNetworkError(dispatch, err.message)
+    }).finally(() => {
+            dispatch(setIsLoading(false))
         }
     )
 }

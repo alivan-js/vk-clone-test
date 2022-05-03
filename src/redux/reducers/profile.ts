@@ -1,5 +1,8 @@
 import {profileAPI, ProfileUserInfoType, ResultCode} from "../../utils/api";
 import {AppThunk, Nullable} from "../store";
+import {setIsLoading} from "./app";
+import {handleServerNetworkError} from "../../utils/error";
+import {AxiosError} from "axios";
 
 type initialStateType = typeof initialState
 
@@ -70,36 +73,82 @@ export const clearPosts = () => ({type: "PROFILE/POSTS-CLEARED"}) as const
 
 export const fetchUserData = (id: string): AppThunk => async (dispatch) => {
     dispatch(setLoading(true))
-    const data = await profileAPI.getUserData(id)
-    const status = await profileAPI.getStatus(id)
-    dispatch(setProfile(data))
-    dispatch(setStatus(status))
-    dispatch(setLoading(false))
+    dispatch(setIsLoading(true))
+    Promise.all([dispatch(fetchProfileInfo(id)), dispatch(fetchProfileStatus(id))]).then((res) => {
+        dispatch(setProfile(res[0]))
+        //@ts-ignore
+        dispatch(setStatus(res[1]))
+    }).catch((err) => {
+        handleServerNetworkError(dispatch, "Some error occurred")
+    }).finally(() => {
+        dispatch(setLoading(false))
+        dispatch(setIsLoading(false))
+    })
 }
 
-export const changeStatusTC = (status: string): AppThunk => async (dispatch) => {
+export const fetchProfileInfo = (id: string): AppThunk => (dispatch) => {
+    return profileAPI.getProfileInfo(id).catch((err: AxiosError) => {
+        handleServerNetworkError(dispatch, err.message)
+    })
+}
+
+export const fetchProfileStatus = (id: string): AppThunk => (dispatch) => {
+    return profileAPI.getStatus(id).catch((err: AxiosError) => {
+        handleServerNetworkError(dispatch, err.message)
+    })
+}
+
+export const changeStatusTC = (status: string): AppThunk => (dispatch) => {
+    dispatch(setIsLoading(true))
     dispatch(setLoading(true))
-    await profileAPI.updateStatus(status)
-    dispatch(setLoading(false))
+    profileAPI.updateStatus(status).then((res) => {
+        if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setStatus(status))
+        } else {
+            handleServerNetworkError(dispatch, res.data.messages[0])
+        }
+    }).catch((err: AxiosError) => {
+        handleServerNetworkError(dispatch, err.message)
+    }).finally(() => {
+        dispatch(setLoading(false))
+        dispatch(setIsLoading(false))
+    })
 }
 
-export const updatePhotoTC = (photoFile: File): AppThunk => async (dispatch) => {
-    const res = await profileAPI.updatePhoto(photoFile)
-    if (res.resultCode === ResultCode.Success) {
-        dispatch(setPhoto(res.data))
-    }
+export const updatePhotoTC = (photoFile: File): AppThunk => (dispatch) => {
+    dispatch(setIsLoading(true))
+    profileAPI.updatePhoto(photoFile).then((res) => {
+        if (res.resultCode === ResultCode.Success) {
+            dispatch(setPhoto(res.data))
+        } else {
+            handleServerNetworkError(dispatch, res.messages[0])
+        }
+    }).catch((err: AxiosError) => {
+        handleServerNetworkError(dispatch, err.message)
+    }).finally(() => {
+        dispatch(setIsLoading(false))
+    })
 }
 
 export const updateProfileTC = (profileData: EditParamsType): AppThunk => async (dispatch, getState) => {
     dispatch(setLoading(true))
+    dispatch(setIsLoading(true))
     const userId = getState().profile.userInfo.userId.toString()
-    const res = await profileAPI.updateProfile(profileData)
-    if (res.data.resultCode === ResultCode.Success) {
-        if (userId != null) {
-            dispatch(fetchUserData(userId))
+    profileAPI.updateProfile(profileData).then((res) => {
+        if (res.data.resultCode === ResultCode.Success) {
+            if (userId != null) {
+                dispatch(fetchUserData(userId))
+            }
+        } else {
+            handleServerNetworkError(dispatch, res.data.messages[0])
         }
-    }
-    dispatch(setLoading(false))
+    }).catch((err: AxiosError) => {
+        handleServerNetworkError(dispatch, err.message)
+
+    }).finally(() => {
+        dispatch(setLoading(false))
+        dispatch(setIsLoading(false))
+    })
 }
 
 // types

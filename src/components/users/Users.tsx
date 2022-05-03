@@ -2,7 +2,6 @@ import React, {useRef, MutableRefObject, FC, useCallback, useEffect, useState} f
 import s from "./Users.module.scss"
 import {useAppSelector} from "../../redux/store";
 import User from './User';
-import Loader from '../loader/Loader';
 import {WithAuthRedirect} from "../hoc/withAuthRedirect";
 import {compose} from 'redux';
 import {clearUsers, fetchUsers, FilterType, setFilter, setPage} from "../../redux/reducers/users";
@@ -18,7 +17,6 @@ const Users: FC = () => {
     const page = useAppSelector(state => state.users.page)
     const totalPage = useAppSelector(state => state.users.totalItems)
     const users = useAppSelector(state => state.users.users)
-    const isLoading = useAppSelector(state => state.users.isFetchingUsers)
     const filter = useAppSelector(state => state.users.filter)
     const [searchParams, setSearchParams] = useSearchParams()
     const [isFetchedUsers, setIsFetchedUsers] = useState(false)
@@ -97,7 +95,6 @@ const Users: FC = () => {
                                          id={el.id}/>
                         }
                     )}
-                    {isLoading && <Loader/>}
                     <div ref={observedElement}/>
                 </div>
             </div>

@@ -1,11 +1,12 @@
-import {UserInListType, usersAPI} from "../../utils/api";
+import {ResultCode, UserInListType, usersAPI} from "../../utils/api";
 import {AppThunk, Nullable} from "../store";
+import {handleServerNetworkError} from "../../utils/error";
+import {setIsLoading} from "./app";
+import {AxiosError} from "axios";
 
 const initialState = {
     users: [] as Array<UserInListType>,
-    isFetchingUsers: false,
     isFollowingInProgress: {
-        status: false,
         id: null as Nullable<number>
     },
     page: 1,
@@ -29,13 +30,10 @@ export function usersReducer(state = initialState, action: UsersActionsType): Us
                 users: state.users.map(el => el.id === action.payload ? {...el, followed: !el.followed} : el)
             }
         }
-        case "USERS/FETCHING-USERS-SET": {
-            return {...state, isFetchingUsers: action.payload}
-        }
         case "USERS/FOLLOWING-PROGRESS-SET": {
             return {
                 ...state, isFollowingInProgress: {
-                    status: action.payload.status, id: action.payload.id
+                    id: action.payload.id
                 }
             }
         }
@@ -64,9 +62,8 @@ export function usersReducer(state = initialState, action: UsersActionsType): Us
 
 export const addUsers = (payload: UserInListType[]) => ({type: "USERS/USERS-ADDED", payload}) as const
 export const followUser = (payload: any) => ({type: "USERS/USER-FOLLOWED-TOGGLED", payload}) as const
-export const setFollowingProgress = (payload: { status: boolean, id: number | null }) =>
+export const setFollowingProgress = (payload: {id: number | null }) =>
     ({type: "USERS/FOLLOWING-PROGRESS-SET", payload}) as const
-export const setFetchingUsers = (payload: boolean) => ({type: "USERS/FETCHING-USERS-SET", payload}) as const
 export const setTotalNumber = (payload: number) => ({type: "USERS/TOTAL-NUMBER-SET", payload}) as const
 export const setPage = (payload: number) => ({type: "USERS/PAGE-SET", payload}) as const
 export const setFilter = (filter: FilterType) => ({type: "USERS/FILTER-SET", payload: filter}) as const
@@ -74,26 +71,60 @@ export const clearUsers = () => ({type: "USERS/USERS-CLEARED"}) as const
 
 // thunks
 
-export const fetchUsers = (page: number, filter: FilterType): AppThunk => async (dispatch) => {
-    dispatch(setFetchingUsers(true))
-    const data = await usersAPI.getUsers(page, filter.term, filter.friend)
-    dispatch(setTotalNumber(data.totalCount))
-    dispatch(addUsers(data.items))
-    dispatch(setFetchingUsers(false))
+export const fetchUsers = (page: number, filter: FilterType): AppThunk => (dispatch) => {
+    dispatch(setIsLoading(true))
+    usersAPI.getUsers(page, filter.term, filter.friend).then((data) => {
+        if (!data.error) {
+            dispatch(setTotalNumber(data.totalCount))
+            dispatch(addUsers(data.items))
+        } else {
+            handleServerNetworkError(dispatch, data.error)
+        }
+    }).catch((err: AxiosError) => {
+            handleServerNetworkError(dispatch, err.message)
+        }
+    ).finally(() => {
+        dispatch(setIsLoading(false))
+    })
 }
 
-export const fetchFollowing = (id: number): AppThunk => async (dispatch) => {
-    dispatch(setFollowingProgress({status: true, id}))
-    await usersAPI.follow(id)
-    dispatch(followUser(id))
-    dispatch(setFollowingProgress({status: true, id: null}))
+export const fetchFollowing = (id: number): AppThunk => (dispatch) => {
+    dispatch(setIsLoading(true))
+    dispatch(setFollowingProgress({id}))
+    usersAPI.follow(id).then((res) => {
+        // @ts-ignore
+        if (res.resultCode === ResultCode.Success) {
+            dispatch(followUser(id))
+        } else {
+            // @ts-ignore
+            handleServerNetworkError(dispatch, res.message)
+        }
+    }).catch((err: AxiosError) => {
+        handleServerNetworkError(dispatch, "Some error occurred")
+    }).finally(() => {
+        dispatch(setFollowingProgress({id: null}))
+    })
+
+    // как сделать альтернативный тип?
 }
 
-export const fetchUnfollowing = (id: number): AppThunk => async (dispatch) => {
-    dispatch(setFollowingProgress({status: true, id}))
-    await usersAPI.unfollow(id)
-    dispatch(followUser(id))
-    dispatch(setFollowingProgress({status: true, id: null}))
+export const fetchUnfollowing = (id: number): AppThunk => (dispatch) => {
+    dispatch(setIsLoading(true))
+    dispatch(setFollowingProgress({id}))
+    usersAPI.unfollow(id).then((res) => {
+            // @ts-ignore
+            if (res.resultCode === ResultCode.Success) {
+                dispatch(followUser(id))
+            } else {
+                // @ts-ignore
+                handleServerNetworkError(dispatch, res.message)
+            }
+        }
+    ).catch((err: AxiosError) => {
+        handleServerNetworkError(dispatch, "Some error occurred")
+    }).finally(() => {
+        dispatch(setFollowingProgress({id: null}))
+    })
 }
 
 // types
@@ -111,6 +142,5 @@ export type UsersActionsType =
     | ReturnType<typeof setFollowingProgress>
     | ReturnType<typeof setTotalNumber>
     | ReturnType<typeof setPage>
-    | ReturnType<typeof setFetchingUsers>
     | ReturnType<typeof clearUsers>
     | ReturnType<typeof setFilter>

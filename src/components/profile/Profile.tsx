@@ -25,8 +25,8 @@ const Profile = () => {
     const [editMode, setEditMode] = useState(false)
     const isOwner = Number(params.id) === ownerId
     const profile = useAppSelector(state => state.profile)
+    const photoProfile = useAppSelector(state => state.profile.userInfo.photos)
     const dispatch = useDispatch()
-
 
     useEffect(() => {
         if (params.id !== undefined) {
@@ -58,6 +58,7 @@ const Profile = () => {
     }, [dispatch])
 
 
+    // почему тут не происходит перерисовки, хотя в стейте новые картинки?
 
     return (
         <div className={s.content}>
@@ -65,9 +66,9 @@ const Profile = () => {
                 <div className={s.first__column__info}>
                     {isOwner
                         ? <label htmlFor="changeImg"><img
-                            src={profile.userInfo?.photos?.large || "/assets/img/avatar.jpg"} alt=""
+                            src={photoProfile?.large || "/assets/img/avatar.jpg"} alt=""
                             className={s.first__column__info__img}/></label>
-                        : <img src={profile.userInfo?.photos?.large || "/assets/img/avatar.jpg"} alt=""
+                        : <img src={photoProfile?.large || "/assets/img/avatar.jpg"} alt=""
                                className={s.first__column__info__img_1}/>
                     }
                     {isOwner &&

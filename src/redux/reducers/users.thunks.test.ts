@@ -37,9 +37,9 @@ test("user should be followed", async () => {
     // result
 
     expect(dispatchMock).toBeCalledTimes(3)
-    expect(dispatchMock).toHaveBeenNthCalledWith(1, setFollowingProgress({status: true, id: 1}))
+    expect(dispatchMock).toHaveBeenNthCalledWith(1, setFollowingProgress({id: 1}))
     expect(dispatchMock).toHaveBeenNthCalledWith(2, followUser(1))
-    expect(dispatchMock).toHaveBeenNthCalledWith(3, setFollowingProgress({status: true, id: null}))
+    expect(dispatchMock).toHaveBeenNthCalledWith(3, setFollowingProgress({id: null}))
 
 })
 
@@ -57,8 +57,8 @@ test("user should be unfollowed", async () => {
     // result
 
     expect(dispatchMock).toBeCalledTimes(3)
-    expect(dispatchMock).toHaveBeenNthCalledWith(1, setFollowingProgress({status: true, id: 1}))
+    expect(dispatchMock).toHaveBeenNthCalledWith(1, setFollowingProgress({id: 1}))
     expect(dispatchMock).toHaveBeenNthCalledWith(2, followUser(1))
-    expect(dispatchMock).toHaveBeenNthCalledWith(3, setFollowingProgress({status: true, id: null}))
+    expect(dispatchMock).toHaveBeenNthCalledWith(3, setFollowingProgress({id: null}))
 
 })

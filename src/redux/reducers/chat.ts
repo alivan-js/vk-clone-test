@@ -3,12 +3,12 @@ import {chatAPI} from "../../utils/chat-api";
 import {AppThunk} from "../store";
 import {v1} from 'uuid'
 
-const intitialState = {
+const inititialState = {
     messages: [] as MessageTypeWithID[],
     status: "pending" as StatusType
 }
 
-export function chatReducer(state = intitialState, action: ChatActionsType): InitialStateType {
+export function chatReducer(state = inititialState, action: ChatActionsType): InitialStateType {
     switch (action.type) {
         case "CHAT/MESSAGES-SET": {
             return {
@@ -76,7 +76,7 @@ export const sendMessageTC = (message: string): AppThunk => () => {
 
 // types
 
-type InitialStateType = typeof intitialState
+type InitialStateType = typeof inititialState
 
 export type MessageType = {
     userId: number

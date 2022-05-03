@@ -14,11 +14,6 @@ const Chat: FC = () => {
     const chatAnchorRef = useRef<HTMLDivElement>(null)
     const [isAutoScroll, setIsAutoScroll] = useState(true)
 
-    console.log(status
-    )
-
-    debugger
-
     useEffect(() => {
         dispatch(startMessagesListening())
         return () => {
@@ -43,6 +38,9 @@ const Chat: FC = () => {
             isAutoScroll && setIsAutoScroll(false)
         }
     }
+
+
+    // при первой отправке не прихдоит сообщение обратно в чат, хотя отправляется на сервер
 
     return (
         <div className={"chat-content"}>

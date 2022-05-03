@@ -8,15 +8,14 @@ import Users from "./components/users/Users";
 import {Nullable, useAppSelector} from './redux/store';
 import Login from './components/login/Login';
 import {useDispatch} from "react-redux";
-import Loader from "./components/loader/Loader";
 import {initializeAppTC} from "./redux/reducers/app";
+import {ErrorSnackbar} from "./components/ErrorSnackBar";
 
 const App: FC = () => {
 
     const dispatch = useDispatch()
     const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
     let id: Nullable<number> | string = useAppSelector<Nullable<number>>(state => state.auth.userData.id)
-
 
 
     useEffect(() => {
@@ -32,28 +31,30 @@ const App: FC = () => {
     }, [])
 
 
-
     const catchUnhandledErrors = (e: PromiseRejectionEvent): void => {
         alert("Some error occurred")
     }
 
 
     if (!isInitialized) {
-        return <Loader/>
+        return <div/>
     }
 
     return (
-        <Routes>
-            <Route path={"/login"} element={<Login/>}/>
-            <Route path={"/"} element={<Layout/>}>
-                <Route index element={<Navigate to={"profile"}/>}/>
-                <Route path={"/chat"} element={<Chat/>}/>
-                <Route path={"/profile"} element={<Navigate to={"/profile/" + id}/>}/>
-                <Route path={"/profile/:id"} element={<Profile/>}/>
-                <Route path={"/users"} element={<Users/>}/>
-                <Route path={"*"} element={<Profile/>}/>
-            </Route>
-        </Routes>
+        <>
+            <ErrorSnackbar/>
+            <Routes>
+                <Route path={"/login"} element={<Login/>}/>
+                <Route path={"/"} element={<Layout/>}>
+                    <Route index element={<Navigate to={"profile"}/>}/>
+                    <Route path={"/chat"} element={<Chat/>}/>
+                    <Route path={"/profile"} element={<Navigate to={"/profile/" + id}/>}/>
+                    <Route path={"/profile/:id"} element={<Profile/>}/>
+                    <Route path={"/users"} element={<Users/>}/>
+                    <Route path={"*"} element={<Profile/>}/>
+                </Route>
+            </Routes>
+        </>
     );
 }
 

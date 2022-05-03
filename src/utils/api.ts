@@ -11,13 +11,13 @@ const instance = axios.create({
 
 export const usersAPI = {
     getUsers(page: number, term: string, friend: Nullable<boolean>) {
-        return instance.get<GetUsersResponseType>(`users?page=${page}&term=${term}&friend=${friend}`).then((response) => response.data)
+        return instance.get<GetUsersResponseType>(`users?pages=${page}&term=${term}&friend=${friend}`).then((response) => response.data)
     },
     follow(id: number) {
-        return instance.post<CommonResponseType<{}>>(`follow/${id}`).then((response) => response.data)
+        return instance.post<CommonResponseType<{}> | {message: string}>(`follow/${id}`).then((response) => response.data)
     },
     unfollow(id: number) {
-        return instance.delete<CommonResponseType<{}>>(`follow/${id}`).then((response) => response.data)
+        return instance.delete<CommonResponseType<{}> | {message: string}>(`follow/${id}`).then((response) => response.data)
     }
 }
 
@@ -37,7 +37,7 @@ export const authAPI = {
 }
 
 export const profileAPI = {
-    getUserData(id: string) {
+    getProfileInfo(id: string) {
         return instance.get<CommonResponseType<ProfileUserInfoType>>(`/profile/${id}`).then((response) => response.data)
     },
     getStatus(id: string) {

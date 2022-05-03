@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useState, FocusEvent, useEffect} from 'react';
+import React, {ChangeEvent, FC, useState, KeyboardEvent, useEffect} from 'react';
 
 type EditableSpanType = {
     text: string,
@@ -18,6 +18,7 @@ const EditableSpan: FC<EditableSpanType> = React.memo(({text, changeText}) => {
 
     const changeTextCallback = () => {
         changeText(state)
+        setState(text)
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +28,12 @@ const EditableSpan: FC<EditableSpanType> = React.memo(({text, changeText}) => {
     const onBlurHandler = () => {
         changeTextCallback()
         setEditMode(false)
+    }
+
+    const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            changeTextCallback()
+        }
     }
 
     const onDoubleClickHandler = () => {
@@ -40,7 +47,8 @@ const EditableSpan: FC<EditableSpanType> = React.memo(({text, changeText}) => {
                     autoFocus
                     value={state}
                     onChange={onChangeHandler}
-                    onBlur={onBlurHandler}/>
+                    onBlur={onBlurHandler}
+                    onKeyDown={onKeyDownHandler}/>
                 : <span
                     onDoubleClick={onDoubleClickHandler}>
                     {state}
