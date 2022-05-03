@@ -21,6 +21,10 @@ const Users: FC = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [isFetchedUsers, setIsFetchedUsers] = useState(false)
     const isOnScreen = useOnScreen(observedElement);
+    const isLoading = useAppSelector(state => state.profile.isLoading)
+
+    console.log(isFetchedUsers)
+
 
     useEffect(() => {
         const parsed = Object.fromEntries(searchParams)
@@ -81,8 +85,8 @@ const Users: FC = () => {
 
     const changeFilterCallback = useCallback((filter: FilterType) => {
         dispatch(setFilter(filter))
-        dispatch(clearUsers())
         dispatch(setPage(1))
+        dispatch(clearUsers())
     }, [dispatch, filter])
 
     return (
