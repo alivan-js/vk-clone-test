@@ -2,15 +2,17 @@ import React, {FC, useState} from 'react';
 import {useDispatch} from "react-redux";
 import {likePost} from "../../redux/reducers/profile";
 import s from "./Post.module.scss"
+import {Nullable} from "../../redux/store";
 
 type PostType = {
     text: string,
     likesCount: number
     id: number
     profileName: string | undefined
+    photo: Nullable<string> | undefined
 }
 
-const Post: FC<PostType> = React.memo(({text, likesCount, id, profileName}) => {
+const Post: FC<PostType> = React.memo(({text, likesCount, id, profileName, photo}) => {
 
     const [clicked, setClicked] = useState(false)
 
@@ -26,7 +28,7 @@ const Post: FC<PostType> = React.memo(({text, likesCount, id, profileName}) => {
     return (
         <div className={s.post}>
             <div className={s.post__author}>
-                <img src={"/assets/img/avatar.jpg"} alt=""/>
+                <img src={photo || "/assets/img/avatar.jpg"} alt=""/>
                 <span>{profileName}</span>
             </div>
             <div className={s.post__body}>
@@ -34,7 +36,7 @@ const Post: FC<PostType> = React.memo(({text, likesCount, id, profileName}) => {
             </div>
             <div className={s.post__socials}>
                 {clicked
-                    ? <img src="/assets/svg/liked.svg" alt="liked" style={{width: "24px", height: "24px"}}/>
+                    ? <img src={"/assets/svg/liked.svg"} alt="liked" style={{width: "24px", height: "24px"}}/>
                     : <img onClick={onclickLikeHandler} src="/assets/svg/like.svg" alt="like"
                            style={{marginRight: "2px"}}/>
                 }
