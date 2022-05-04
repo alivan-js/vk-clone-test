@@ -39,9 +39,6 @@ const Chat: FC = () => {
         }
     }
 
-
-    // при первой отправке не прихдоит сообщение обратно в чат, хотя отправляется на сервер
-
     return (
         <div className={"chat-content"}>
             <div className={"chat-message-top-block"}/>

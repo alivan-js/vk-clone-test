@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {
     addPost,
     changeStatusTC, clearPosts,
-    fetchUserData,
+    fetchUserData, setLoaded,
     setProfile,
     setStatus,
     updatePhotoTC
@@ -27,6 +27,9 @@ const Profile = () => {
     const profile = useAppSelector(state => state.profile)
     const photoProfile = useAppSelector(state => state.profile.userInfo.photos)
     const dispatch = useDispatch()
+    const isLoaded = useAppSelector(state => state.profile.isLoaded)
+    const statusIsLoading = useAppSelector(state => state.profile.statusLoading)
+
 
     useEffect(() => {
         if (params.id !== undefined) {
@@ -37,6 +40,7 @@ const Profile = () => {
             dispatch(setProfile({}))
             dispatch(setStatus(""))
             dispatch(clearPosts())
+            dispatch(setLoaded(false))
         }
 
     }, [dispatch, params.id])
@@ -57,7 +61,9 @@ const Profile = () => {
         }
     }, [dispatch])
 
-    // почему тут не происходит перерисовки, хотя в стейте новые картинки?
+    if (!isLoaded) {
+        return <div/>
+    }
 
     return (
         <div className={s.content}>
@@ -91,20 +97,17 @@ const Profile = () => {
                             <div className={s.description__status}>
                                 {isOwner
                                     ?
-                                    <EditableSpan
-                                        text={profile.status || "Установить статус"} changeText={updateStatusCallback}/>
-                                    : <span style={{width: "100%"}}>{profile.status}</span>
+                                    (statusIsLoading ? "" : <EditableSpan
+                                        text={profile.status || ""} changeText={updateStatusCallback}/>)
+                                    : (statusIsLoading ? "" : <span style={{width: "100%"}}>{profile.status}</span>)
                                 }
-
                             </div>
                         </div>
-                        <div
-                            className={s.description__status}>{profile.userInfo.lookingForAJob && "в поиске работы"}</div>
                     </div>
                     <div className={s.description__details}>
                         {editMode
                             ? <ProfileEditForm profile={profile.userInfo} setEditMode={setEditMode}/>
-                            : <ProfileInfo profile={profile.userInfo}/>
+                            : <ProfileInfo profile={profile?.userInfo}/>
                         }
                     </div>
                 </div>

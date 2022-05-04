@@ -47,8 +47,7 @@ const Login = () => {
                 <main className={s.main}>
                     <div className={s.content}>
                         <div className={s.header}>Вход Насвязи</div>
-                        <div className={s.message}>Чтобы зайти, сначала зарегистрируйтесь
-                            <a href="https://social-network.samuraijs.com/" target="_blank">здесь</a>.
+                        <div className={s.message}>Чтобы зайти, сначала зарегистрируйтесь <a href="https://social-network.samuraijs.com/" target="_blank">здесь</a>.
                         </div>
                         <form onSubmit={onSubmit} className={s.form}>
                             <input
@@ -67,7 +66,7 @@ const Login = () => {
                                 render={({messages}) => {
                                     return messages
                                         ? Object.entries(messages).map(([type, message]) => (
-                                            <p key={type} style={{color: "red"}}>{message}</p>
+                                            <p key={type} style={{color: "red", height: "15px"}}>{message}</p>
                                         ))
                                         : null;
                                 }}
@@ -88,7 +87,7 @@ const Login = () => {
                                 render={({messages}) => {
                                     return messages
                                         ? Object.entries(messages).map(([type, message]) => (
-                                            <p key={type} style={{color: "red"}}>{message}</p>
+                                            <p key={type} style={{color: "red", height: "15px"}}>{message}</p>
                                         ))
                                         : null;
                                 }}

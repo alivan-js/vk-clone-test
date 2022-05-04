@@ -14,10 +14,10 @@ export const usersAPI = {
         return instance.get<GetUsersResponseType>(`users?page=${page}&term=${term}&friend=${friend}`).then((response) => response.data)
     },
     follow(id: number) {
-        return instance.post<CommonResponseType<{}> | {message: string}>(`follow/${id}`).then((response) => response.data)
+        return instance.post<CommonResponseType<{}> | { message: string }>(`follow/${id}`).then((response) => response.data)
     },
     unfollow(id: number) {
-        return instance.delete<CommonResponseType<{}> | {message: string}>(`follow/${id}`).then((response) => response.data)
+        return instance.delete<CommonResponseType<{}> | { message: string }>(`follow/${id}`).then((response) => response.data)
     }
 }
 
@@ -50,7 +50,7 @@ export const profileAPI = {
         const formData = new FormData();
         formData.append("image", photoFile);
 
-        return instance.put<CommonResponseType<PhotosType>>("/profile/photo", formData, {
+        return instance.put<CommonResponseType<{ photos: PhotosType }>>("/profile/photo", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

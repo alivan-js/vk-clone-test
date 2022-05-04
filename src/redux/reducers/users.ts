@@ -103,6 +103,7 @@ export const fetchFollowing = (id: number): AppThunk => (dispatch) => {
         handleServerNetworkError(dispatch, "Some error occurred")
     }).finally(() => {
         dispatch(setFollowingProgress({id: null}))
+        dispatch(setIsLoading(false))
     })
 
     // как сделать альтернативный тип?
@@ -124,6 +125,7 @@ export const fetchUnfollowing = (id: number): AppThunk => (dispatch) => {
         handleServerNetworkError(dispatch, "Some error occurred")
     }).finally(() => {
         dispatch(setFollowingProgress({id: null}))
+        dispatch(setIsLoading(false))
     })
 }
 

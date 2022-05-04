@@ -15,8 +15,9 @@ export type PostType = {
 const initialState = {
     posts: [] as PostType[],
     userInfo: {} as ProfileUserInfoType,
-    isLoading: false,
+    isLoaded: false,
     status: null as Nullable<string>,
+    statusLoading: false
 }
 
 export function profileReducer(state = initialState, action: ProfileActionsType): initialStateType {
@@ -44,7 +45,7 @@ export function profileReducer(state = initialState, action: ProfileActionsType)
             }
         case "PROFILE/LOADING-SET":
             return {
-                ...state, isLoading: action.payload
+                ...state, isLoaded: action.payload
             }
         case "PROFILE/STATUS-SET":
             return {
@@ -53,6 +54,10 @@ export function profileReducer(state = initialState, action: ProfileActionsType)
         case "PROFILE/PHOTO-SET":
             return {
                 ...state, userInfo: {...state.userInfo, photos: action.photos}
+            }
+        case "PROFILE/STATUS-IS-LOADING-SET":
+            return {
+                ...state, statusLoading: action.payload
             }
         default:
             return state
@@ -64,15 +69,15 @@ export function profileReducer(state = initialState, action: ProfileActionsType)
 export const addPost = (payload: string) => ({type: "PROFILE/POST-ADDED", payload}) as const
 export const likePost = (payload: number) => ({type: "PROFILE/POST-LIKED", payload}) as const
 export const setProfile = (payload: any) => ({type: "PROFILE/PROFILE-SET", payload}) as const
-export const setLoading = (payload: boolean) => ({type: "PROFILE/LOADING-SET", payload}) as const
+export const setLoaded = (payload: boolean) => ({type: "PROFILE/LOADING-SET", payload}) as const
 export const setStatus = (status: string | null) => ({type: "PROFILE/STATUS-SET", payload: status}) as const
+export const setStatusLoading = (status: boolean) => ({type: "PROFILE/STATUS-IS-LOADING-SET", payload: status}) as const
 export const setPhoto = (photos: PhotosType) => ({type: "PROFILE/PHOTO-SET", photos}) as const
 export const clearPosts = () => ({type: "PROFILE/POSTS-CLEARED"}) as const
 
 // thunks
 
 export const fetchUserData = (id: string): AppThunk => async (dispatch) => {
-    dispatch(setLoading(true))
     dispatch(setIsLoading(true))
     Promise.all([dispatch(fetchProfileInfo(id)), dispatch(fetchProfileStatus(id))]).then((res) => {
         dispatch(setProfile(res[0]))
@@ -81,7 +86,7 @@ export const fetchUserData = (id: string): AppThunk => async (dispatch) => {
     }).catch((err) => {
         handleServerNetworkError(dispatch, "Some error occurred")
     }).finally(() => {
-        dispatch(setLoading(false))
+        dispatch(setLoaded(true))
         dispatch(setIsLoading(false))
     })
 }
@@ -100,7 +105,7 @@ export const fetchProfileStatus = (id: string): AppThunk => (dispatch) => {
 
 export const changeStatusTC = (status: string): AppThunk => (dispatch) => {
     dispatch(setIsLoading(true))
-    dispatch(setLoading(true))
+    dispatch(setStatusLoading(true))
     profileAPI.updateStatus(status).then((res) => {
         if (res.data.resultCode === ResultCode.Success) {
             dispatch(setStatus(status))
@@ -110,8 +115,8 @@ export const changeStatusTC = (status: string): AppThunk => (dispatch) => {
     }).catch((err: AxiosError) => {
         handleServerNetworkError(dispatch, err.message)
     }).finally(() => {
-        dispatch(setLoading(false))
         dispatch(setIsLoading(false))
+        dispatch(setStatusLoading(false))
     })
 }
 
@@ -119,7 +124,7 @@ export const updatePhotoTC = (photoFile: File): AppThunk => (dispatch) => {
     dispatch(setIsLoading(true))
     profileAPI.updatePhoto(photoFile).then((res) => {
         if (res.resultCode === ResultCode.Success) {
-            dispatch(setPhoto(res.data))
+            dispatch(setPhoto(res.data.photos))
         } else {
             handleServerNetworkError(dispatch, res.messages[0])
         }
@@ -131,7 +136,6 @@ export const updatePhotoTC = (photoFile: File): AppThunk => (dispatch) => {
 }
 
 export const updateProfileTC = (profileData: EditParamsType): AppThunk => async (dispatch, getState) => {
-    dispatch(setLoading(true))
     dispatch(setIsLoading(true))
     const userId = getState().profile.userInfo.userId.toString()
     profileAPI.updateProfile(profileData).then((res) => {
@@ -146,7 +150,6 @@ export const updateProfileTC = (profileData: EditParamsType): AppThunk => async 
         handleServerNetworkError(dispatch, err.message)
 
     }).finally(() => {
-        dispatch(setLoading(false))
         dispatch(setIsLoading(false))
     })
 }
@@ -157,10 +160,11 @@ export type ProfileActionsType =
     ReturnType<typeof addPost>
     | ReturnType<typeof likePost>
     | ReturnType<typeof setProfile>
-    | ReturnType<typeof setLoading>
+    | ReturnType<typeof setLoaded>
     | ReturnType<typeof setStatus>
     | ReturnType<typeof setPhoto>
     | ReturnType<typeof clearPosts>
+    | ReturnType<typeof setStatusLoading>
 
 export type PhotosType = {
     small: string | null

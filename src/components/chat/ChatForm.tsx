@@ -39,7 +39,7 @@ const ChatForm: FC<ChatFormType> = React.memo(({status}) => {
     return (
         <div className={"chat-input"}>
             <form onSubmit={onSubmit}>
-                <input disabled={status === "pending"}
+                <input disabled={status !== "ready"}
                        placeholder={"Напишите сообщение..."}
                        {...register("message")}
                 />

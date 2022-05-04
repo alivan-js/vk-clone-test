@@ -12,6 +12,9 @@ const EditableSpan: FC<EditableSpanType> = React.memo(({text, changeText}) => {
 
     useEffect(() => {
         setState(text)
+        return () => {
+            setState("")
+        }
     }, [text])
 
     // callbacks

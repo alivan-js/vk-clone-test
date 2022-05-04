@@ -60,7 +60,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
         )
     }
 
-    const rowExampleWithPattern = (name: valuesType, desc: string, patternValue?: RegExp, patternMessage?: string) => {
+    const rowExampleWithPattern = (name: valuesType, desc: string, patternValue: RegExp, patternMessage: string) => {
         return (
             <div className={styles.description__details__body}>
                 <div className={styles.description__details__key}>{desc}</div>
@@ -79,15 +79,6 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
     return (
         <form onSubmit={onSubmit} className={s.form}>
             {rowExample("lookingForAJobDescription", "Dream Job")}
-            <div className={styles.description__details__body}>
-                <div  className={styles.description__details__key}>{"Are you looking for a job?"}</div>
-                <div>
-                    <input
-                        type={"checkbox"}
-                        {...register("lookingForAJob")}
-                    />
-                </div>
-            </div>
             {rowExample("fullName", "Name")}
             {rowExample("aboutMe", "About me")}
             {rowExampleWithPattern("contacts.github", "Github", /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/, "Incorrect url")}
@@ -186,7 +177,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
                         : null;
                 }}
             />
-            <button className={s.button_login}>Войти</button>
+            <button className={s.button_login}>Сохранить</button>
         </form>
     );
 })
