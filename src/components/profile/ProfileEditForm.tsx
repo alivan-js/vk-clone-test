@@ -12,7 +12,21 @@ type ProfileEditFormType = {
     setEditMode: (editMode: boolean) => void
 }
 
-type valuesType = "aboutMe" | "contacts" | "lookingForAJob" | "lookingForAJobDescription" | "fullName" | "userId" | "contacts.github" | "contacts.vk" | "contacts.facebook" | "contacts.instagram" | "contacts.twitter" | "contacts.website" | "contacts.youtube" | "contacts.mainLink"
+type valuesType =
+    "aboutMe"
+    | "contacts"
+    | "lookingForAJob"
+    | "lookingForAJobDescription"
+    | "fullName"
+    | "userId"
+    | "contacts.github"
+    | "contacts.vk"
+    | "contacts.facebook"
+    | "contacts.instagram"
+    | "contacts.twitter"
+    | "contacts.website"
+    | "contacts.youtube"
+    | "contacts.mainLink"
 
 const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMode}) => {
 

@@ -1,7 +1,7 @@
 import {Dispatch} from "redux";
 import {setError, setIsLoading} from "../redux/reducers/app";
-import { RootAppActionsType } from "../redux/store";
-import { CommonResponseType } from "./api";
+import {RootAppActionsType} from "../redux/store";
+import {CommonResponseType} from "./api";
 
 export const handleServerNetworkError = (dispatch: Dispatch<RootAppActionsType>, error: string) => {
     dispatch(setError(error))

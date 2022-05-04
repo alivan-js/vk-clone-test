@@ -7,7 +7,8 @@ const Navigation = () => {
             <ul>
                 <li><NavLink to={"/profile"}><img src={"/assets/svg/profile.svg"} alt={"Profile"}/>Профиль</NavLink></li>
                 <li><NavLink to={"/chat"}><img src={"/assets/svg/chat.svg"} alt={"Chat"}/>Чат</NavLink></li>
-                <li><NavLink to={"/users"}><img src={"/assets/svg/friends.svg"} alt={"Users"}/>Пользователи</NavLink></li>
+                <li><NavLink to={"/users"}><img src={"/assets/svg/friends.svg"} alt={"Users"}/>Пользователи</NavLink>
+                </li>
             </ul>
         </nav>
     );

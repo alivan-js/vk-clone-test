@@ -62,7 +62,7 @@ export function usersReducer(state = initialState, action: UsersActionsType): Us
 
 export const addUsers = (payload: UserInListType[]) => ({type: "USERS/USERS-ADDED", payload}) as const
 export const followUser = (payload: any) => ({type: "USERS/USER-FOLLOWED-TOGGLED", payload}) as const
-export const setFollowingProgress = (payload: {id: number | null }) =>
+export const setFollowingProgress = (payload: { id: number | null }) =>
     ({type: "USERS/FOLLOWING-PROGRESS-SET", payload}) as const
 export const setTotalNumber = (payload: number) => ({type: "USERS/TOTAL-NUMBER-SET", payload}) as const
 export const setPage = (payload: number) => ({type: "USERS/PAGE-SET", payload}) as const

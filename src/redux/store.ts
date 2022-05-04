@@ -23,7 +23,12 @@ export const store = createStore(rootReducer, composeEnhancers(
 ));
 
 export type RootStateType = ReturnType<typeof rootReducer>
-export type RootAppActionsType = AuthActionsType | ChatActionsType | ProfileActionsType | UsersActionsType | AppActionsType
+export type RootAppActionsType =
+    AuthActionsType
+    | ChatActionsType
+    | ProfileActionsType
+    | UsersActionsType
+    | AppActionsType
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType,
     RootStateType,

@@ -58,6 +58,9 @@ export const setUserDataTC = (id: any): AppThunk => async (dispatch) => {
 // types
 
 export type AppActionsType =
-    ReturnType<typeof setInitialized> | ReturnType<typeof setUserImg> | ReturnType<typeof setError> | ReturnType<typeof setIsLoading>
+    ReturnType<typeof setInitialized>
+    | ReturnType<typeof setUserImg>
+    | ReturnType<typeof setError>
+    | ReturnType<typeof setIsLoading>
 
 type InitialStateType = typeof initialState

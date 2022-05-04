@@ -115,7 +115,8 @@ const Profile = () => {
                     <ProfilePostInput setPost={setPost} userImg={profile.userInfo.photos?.small}/>
                 }
                 {isOwner
-                    ? <PostList posts={profile.posts} profileName={profile.userInfo.fullName} photo={profile.userInfo.photos?.small}/>
+                    ? <PostList posts={profile.posts} profileName={profile.userInfo.fullName}
+                                photo={profile.userInfo.photos?.small}/>
                     : <PostList posts={[]}/>
                 }
             </div>

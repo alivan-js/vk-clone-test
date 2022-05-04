@@ -18,7 +18,8 @@ const PostList: FC<PostListType> = React.memo(({posts, profileName, photo}) => {
                 {!posts.length
                     ? <div className={s.empty__posts}><img src={"/assets/svg/bin.svg"} alt=""/>
                         <span>На стене нет пока ни одной записи</span></div>
-                    : posts.map(el => <Post photo={photo} profileName={profileName} id={el.id} key={el.id} text={el.text}
+                    : posts.map(el => <Post photo={photo} profileName={profileName} id={el.id} key={el.id}
+                                            text={el.text}
                                             likesCount={el.likesCount}/>)}
             </div>
         </div>
