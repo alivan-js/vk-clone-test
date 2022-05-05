@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {useNavigate} from "react-router-dom";
 import userAvatar from "../../assets/img/avatar.jpg"
 
-
 type MessageType = {
     text: string,
     photo: string

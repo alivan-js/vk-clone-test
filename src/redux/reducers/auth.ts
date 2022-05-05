@@ -1,12 +1,12 @@
 import {AppThunk, Nullable} from "../store";
 import {
     authAPI,
-    LoginParamsType,
+    LoginParamsType, profileAPI,
     ResultCode,
 } from "../../utils/api";
 import {handleServerNetworkError} from "../../utils/error";
 import {AxiosError} from "axios";
-import {setIsLoading} from "./app";
+import {clearUserData, setIsLoading, setUserImg} from "./app";
 
 const initialState = {
     isLogin: false,
@@ -71,6 +71,7 @@ export const logoutTC = (): AppThunk => (dispatch) => {
     authAPI.logout().then(res => {
         if (res.data.resultCode === ResultCode.Success) {
             dispatch(setIsLoggedOut())
+            dispatch(clearUserData())
         } else {
             handleServerNetworkError(dispatch, res.data.messages[0])
         }
@@ -82,13 +83,15 @@ export const logoutTC = (): AppThunk => (dispatch) => {
     )
 }
 
-export const authTC = (): AppThunk<Promise<number | void | undefined>> => (dispatch) => {
+export const authTC = (): AppThunk => (dispatch) => {
     dispatch(setIsLoading(true))
     return authAPI.me().then((res) => {
             if (res.data.resultCode === ResultCode.Success) {
                 dispatch(setUserData(res.data.data))
                 dispatch(setIsLoggedIn())
-                return res.data.data.id
+                profileAPI.getProfileInfo(res.data.data.id.toString()).then(value => {
+                    dispatch(setUserImg(value.photos.small || ""))
+                })
             } else {
                 handleServerNetworkError(dispatch, res.data.messages[0])
             }

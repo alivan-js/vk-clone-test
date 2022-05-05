@@ -23,6 +23,10 @@ export function appReducer(state = initialState, action: AppActionsType): Initia
         case "APP/IS-LOADING-SET": {
             return {...state, isLoading: action.payload}
         }
+        case "APP/USER-DATA-CLEARED": {
+            return {...state, userImg: null}
+
+        }
         default:
             return state
     }
@@ -34,23 +38,16 @@ export const setInitialized = () => ({type: "APP/INITIALIZED-SET"}) as const
 export const setUserImg = (img: string) => ({type: "APP/USER-IMG-SET", payload: img}) as const
 export const setError = (error: Nullable<string>) => ({type: "APP/ERROR-SET", payload: error}) as const
 export const setIsLoading = (status: boolean) => ({type: "APP/IS-LOADING-SET", payload: status}) as const
+export const clearUserData = () => ({type: "APP/USER-DATA-CLEARED"}) as const
 
 // thunks
 
 export const initializeAppTC = (): AppThunk => (dispatch) => {
-    Promise.all<[Promise<number | void | undefined>]>([dispatch(authTC())]).then(
+    Promise.all([dispatch(authTC())]).then(
         (value) => {
             dispatch(setInitialized())
-            if (value.length) {
-                value[0] && dispatch(setUserDataTC(value[0].toString()))
-            }
         }
     )
-}
-
-export const setUserDataTC = (id: string): AppThunk => async (dispatch) => {
-    let userData = await profileAPI.getProfileInfo(id)
-    dispatch(setUserImg(userData.photos.small || ""))
 }
 
 // types
@@ -60,5 +57,6 @@ export type AppActionsType =
     | ReturnType<typeof setUserImg>
     | ReturnType<typeof setError>
     | ReturnType<typeof setIsLoading>
+    | ReturnType<typeof clearUserData>
 
 type InitialStateType = typeof initialState

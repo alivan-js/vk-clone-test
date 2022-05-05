@@ -32,7 +32,6 @@ const App: FC = () => {
     return (
         <>
             <ErrorSnackbar/>
-            <React.Suspense fallback={<div>Loading</div>}>
                 <Routes>
                     <Route path={"/login"} element={<Login/>}/>
                     <Route path={"/"} element={<Layout/>}>
@@ -44,7 +43,6 @@ const App: FC = () => {
                         <Route path={"*"} element={SuspendedProfile}/>
                     </Route>
                 </Routes>
-            </React.Suspense>
         </>
     );
 }

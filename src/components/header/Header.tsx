@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch} from "react-redux";
 import {useAppSelector} from '../../redux/store';
 import {logoutTC} from "../../redux/reducers/auth";
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {LinearProgress} from "@mui/material";
 import userAvatar from "../../assets/img/avatar.jpg"
 import logo from "../../assets/img/logo.png"
