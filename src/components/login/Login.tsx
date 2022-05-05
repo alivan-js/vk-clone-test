@@ -47,8 +47,10 @@ const Login = () => {
                 <main className={s.main}>
                     <div className={s.content}>
                         <div className={s.header}>Вход Насвязи</div>
-                        <div className={s.message}>Чтобы зайти, сначала зарегистрируйтесь <a
-                            href="https://social-network.samuraijs.com/" target="_blank">здесь</a>.
+                        <div className={s.message}>
+                            <p>Чтобы зайти, сначала зарегистрируйтесь <a
+                            href="https://social-network.samuraijs.com/" target="_blank">здесь</a>.</p>
+                            <p>Тестовый логин и пароль: free@samuraijs.com и free </p>
                         </div>
                         <form onSubmit={onSubmit} className={s.form}>
                             <input
