@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/vk-clone-test/static/css/main.0213e9eb.css",
-    "main.js": "/vk-clone-test/static/js/main.6ccc72f2.js",
+    "main.js": "/vk-clone-test/static/js/main.7af78e40.js",
     "static/js/347.ae94482b.chunk.js": "/vk-clone-test/static/js/347.ae94482b.chunk.js",
     "static/css/251.7af1dec8.chunk.css": "/vk-clone-test/static/css/251.7af1dec8.chunk.css",
-    "static/js/251.4dee2c28.chunk.js": "/vk-clone-test/static/js/251.4dee2c28.chunk.js",
+    "static/js/251.db3a5075.chunk.js": "/vk-clone-test/static/js/251.db3a5075.chunk.js",
     "static/css/282.82a724ef.chunk.css": "/vk-clone-test/static/css/282.82a724ef.chunk.css",
-    "static/js/282.733721dc.chunk.js": "/vk-clone-test/static/js/282.733721dc.chunk.js",
+    "static/js/282.ceb8fc19.chunk.js": "/vk-clone-test/static/js/282.ceb8fc19.chunk.js",
     "static/media/avatar.jpg": "/vk-clone-test/static/media/avatar.5edf0c2bafee92924250.jpg",
     "static/media/friends.svg": "/vk-clone-test/static/media/friends.99b8d7fc8f70dc8864cadb2b2dbb34b9.svg",
     "static/media/chat.svg": "/vk-clone-test/static/media/chat.3ea4bae575c4191d74fd2a27f3ae8541.svg",
@@ -14,15 +14,15 @@
     "index.html": "/vk-clone-test/index.html",
     "static/media/profile.svg": "/vk-clone-test/static/media/profile.bc1acd9891686b7838f75a6022f3b72a.svg",
     "main.0213e9eb.css.map": "/vk-clone-test/static/css/main.0213e9eb.css.map",
-    "main.6ccc72f2.js.map": "/vk-clone-test/static/js/main.6ccc72f2.js.map",
+    "main.7af78e40.js.map": "/vk-clone-test/static/js/main.7af78e40.js.map",
     "347.ae94482b.chunk.js.map": "/vk-clone-test/static/js/347.ae94482b.chunk.js.map",
     "251.7af1dec8.chunk.css.map": "/vk-clone-test/static/css/251.7af1dec8.chunk.css.map",
-    "251.4dee2c28.chunk.js.map": "/vk-clone-test/static/js/251.4dee2c28.chunk.js.map",
+    "251.db3a5075.chunk.js.map": "/vk-clone-test/static/js/251.db3a5075.chunk.js.map",
     "282.82a724ef.chunk.css.map": "/vk-clone-test/static/css/282.82a724ef.chunk.css.map",
-    "282.733721dc.chunk.js.map": "/vk-clone-test/static/js/282.733721dc.chunk.js.map"
+    "282.ceb8fc19.chunk.js.map": "/vk-clone-test/static/js/282.ceb8fc19.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0213e9eb.css",
-    "static/js/main.6ccc72f2.js"
+    "static/js/main.7af78e40.js"
   ]
 }
