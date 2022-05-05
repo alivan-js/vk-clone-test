@@ -65,8 +65,8 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
 
     const rowExample = (name: valuesType, desc: string) => {
         return (
-            <div className={styles.description__details__body}>
-                <div className={styles.description__details__key}>{desc}</div>
+            <div className={styles.description__details__body} >
+                <div className={styles.description__details__key} style={{minWidth: "100px"}}>{desc}</div>
                 <input style={{border: "1px solid black", marginLeft: "5px"}}
                        {...register(name)}
                 />
@@ -77,7 +77,7 @@ const ProfileEditForm: FC<ProfileEditFormType> = React.memo(({profile, setEditMo
     const rowExampleWithPattern = (name: valuesType, desc: string, patternValue: RegExp, patternMessage: string) => {
         return (
             <div className={styles.description__details__body}>
-                <div className={styles.description__details__key}>{desc}</div>
+                <div className={styles.description__details__key} style={{minWidth: "100px"}}>{desc}</div>
                 <input style={{border: "1px solid black", marginLeft: "5px"}}
                        {...register(name, {
                            pattern: {
