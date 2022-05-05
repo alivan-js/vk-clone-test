@@ -4,6 +4,8 @@ import {useDispatch} from "react-redux";
 import {fetchFollowing, fetchUnfollowing} from "../../redux/reducers/users";
 import {NavLink} from "react-router-dom";
 import {useAppSelector} from "../../redux/store";
+import userAvatar from "../../assets/img/avatar.jpg"
+
 
 type UserType = {
     id: number
@@ -31,7 +33,7 @@ const User: FC<UserType> = React.memo(({img, name, isFollowed, id}) => {
         <div className={s.user}>
             <NavLink to={`/profile/${id}`}>
                 <img className={s.user__logo}
-                     src={img ? img : "/assets/img/avatar.jpg"} alt={"UserLogo"}/>
+                     src={img ? img : userAvatar} alt={"UserLogo"}/>
             </NavLink>
             <div className={s.user__body}>
                 <NavLink to={`/profile/${id}`}><span className={s.user__name}>{name}</span></NavLink>

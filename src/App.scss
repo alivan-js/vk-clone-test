@@ -5,7 +5,7 @@
 }
 
 .container {
-  width: 1090px;
+  max-width: 1090px;
   margin: 0 auto;
 }
 
@@ -15,6 +15,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 0 10px;
 }
 
 .header__logo {

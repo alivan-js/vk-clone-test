@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {useForm} from "react-hook-form";
 import {useDispatch} from "react-redux";
 import {sendMessageTC, StatusType} from "../../redux/reducers/chat";
+import arrowBigIcon from "../../assets/svg/arrow-big.svg"
 
 type ChatFormType = {
     status: StatusType
@@ -44,7 +45,7 @@ const ChatForm: FC<ChatFormType> = React.memo(({status}) => {
                        {...register("message")}
                 />
                 <button disabled={status === "pending"}>
-                    <img src={"/assets/svg/arrow-big.svg"} alt="sendButton"/>
+                    <img src={arrowBigIcon} alt="sendButton"/>
                 </button>
             </form>
         </div>

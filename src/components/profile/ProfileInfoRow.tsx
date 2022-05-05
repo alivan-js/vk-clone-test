@@ -11,7 +11,7 @@ const ProfileInfoRow: FC<ProfileInfoRowType> = React.memo(({title, value}) => {
         <>
             {value &&
                 <div className={s.description__details__body}>
-                    <div className={s.description__details__key} style={{width: "75px"}}>{title}</div>
+                    <div className={s.description__details__key}>{title}</div>
                     <div className={s.description__details__value}>
                         <div>{value}</div>
                     </div>

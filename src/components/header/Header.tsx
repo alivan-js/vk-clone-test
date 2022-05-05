@@ -4,6 +4,8 @@ import {useAppSelector} from '../../redux/store';
 import {logoutTC} from "../../redux/reducers/auth";
 import {useNavigate} from 'react-router-dom';
 import {LinearProgress} from "@mui/material";
+import userAvatar from "../../assets/img/avatar.jpg"
+import logo from "../../assets/img/logo.png"
 
 const Header = () => {
 
@@ -18,7 +20,7 @@ const Header = () => {
             <header className="header">
                 <div className={"container"}>
                     <div className="container header__container">
-                        <div className={"header__logo"}><img src={"/assets/img/logo.png"}
+                        <div className={"header__logo"}><img src={logo}
                                                              alt={"Logo"}/><span>насвязи</span>
                         </div>
                         {isLogin &&
@@ -27,7 +29,7 @@ const Header = () => {
                                      onClick={() => {
                                          navigate("/profile")
                                      }}
-                                     src={userImg || "/assets/img/avatar.jpg"}
+                                     src={userImg || userAvatar}
                                      alt={"User avatar"}/>
                                 <span className={"logout"} onClick={() => {
                                     dispatch(logoutTC())

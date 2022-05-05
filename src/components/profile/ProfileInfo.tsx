@@ -11,6 +11,7 @@ const ProfileInfo: FC<ProfileFormType> = React.memo(({profile}) => {
     return (
         <>
             <ProfileInfoRow title={"Обо мне"} value={profile?.aboutMe}/>
+            <ProfileInfoRow title={"Работа мечты"} value={profile?.lookingForAJobDescription}/>
             {
                 profile.contacts !== undefined && Object.keys(profile.contacts).map(el => <ProfileInfoRow key={el}
                                                                                                           title={el}

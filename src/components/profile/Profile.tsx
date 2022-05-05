@@ -17,6 +17,7 @@ import ProfileEditForm from './ProfileEditForm';
 import ProfileInfo from "./ProfileInfo";
 import PostList from "./PostList";
 import ProfilePostInput from "./ProfilePostInput";
+import userAvatar from "../../.././src/assets/img/avatar.jpg"
 
 const Profile = () => {
 
@@ -71,9 +72,9 @@ const Profile = () => {
                 <div className={s.first__column__info}>
                     {isOwner
                         ? <label htmlFor="changeImg"><img
-                            src={photoProfile?.large || "/assets/img/avatar.jpg"} alt=""
+                            src={photoProfile?.large || userAvatar} alt=""
                             className={s.first__column__info__img}/></label>
-                        : <img src={photoProfile?.large || "/assets/img/avatar.jpg"} alt=""
+                        : <img src={photoProfile?.large || userAvatar} alt=""
                                className={s.first__column__info__img_1}/>
                     }
                     {isOwner &&

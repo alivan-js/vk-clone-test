@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {Nullable} from "../../redux/store";
 import {FilterType} from "../../redux/reducers/users";
@@ -21,6 +21,7 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
     const {
         register,
         handleSubmit,
+        setValue
     } = useForm<filterType>({
         criteriaMode: "all",
         defaultValues: {
@@ -34,6 +35,14 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
             changeFilter({term: data.term, friend})
         }
     )
+
+    useEffect(() => {
+        const friend = filter.friend === null ? "" : JSON.stringify(filter.friend)
+        if (filter) {
+            setValue("term", filter.term)
+            setValue("friend", friend)
+            }
+    }, [filter]);
 
     return (
         <form onSubmit={onSubmit}>
