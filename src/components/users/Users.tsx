@@ -20,6 +20,7 @@ const Users: FC = () => {
     const filter = useAppSelector(state => state.users.filter)
     const [searchParams, setSearchParams] = useSearchParams()
     const [isFetchedUsers, setIsFetchedUsers] = useState(false)
+    const [isFilterFetched, setIsFilterFetched] = useState(false)
     const isOnScreen = useOnScreen(observedElement);
 
     useEffect(() => {
@@ -42,6 +43,7 @@ const Users: FC = () => {
         }
 
         dispatch(fetchUsers(1, actualFilter))
+
     }, [dispatch])
 
     useEffect(() => {
@@ -49,10 +51,8 @@ const Users: FC = () => {
         const query: any = {}
 
         if (filter.term) {query.term = filter.term}
-        debugger
-        if (filter.friend !== null) {query.friend = String(filter.friend)}
 
-        console.log(query)
+        if (filter.friend !== null) {query.friend = String(filter.friend)}
 
         setSearchParams({term: query.term ? query.term : "", friend: query.friend ? query.friend : null})
 
@@ -69,6 +69,10 @@ const Users: FC = () => {
     useEffect(() => {
         if (!isFetchedUsers) {
             setIsFetchedUsers(true)
+            return
+        }
+        if (!isFilterFetched) {
+            setIsFilterFetched(true)
             return
         }
         dispatch(fetchUsers(page, filter))
