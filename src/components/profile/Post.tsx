@@ -5,6 +5,7 @@ import s from "./Post.module.scss"
 import {Nullable} from "../../redux/store";
 import like from "../../assets/svg/like.svg"
 import liked from "../../assets/svg/liked.svg"
+import avatarUser from "../../assets/img/avatar.jpg"
 
 type PostType = {
     text: string,
@@ -30,7 +31,7 @@ const Post: FC<PostType> = React.memo(({text, likesCount, id, profileName, photo
     return (
         <div className={s.post}>
             <div className={s.post__author}>
-                <img src={photo || "/assets/img/avatar.jpg"} alt=""/>
+                <img src={photo || avatarUser} alt="userAvatar"/>
                 <span>{profileName}</span>
             </div>
             <div className={s.post__body}>

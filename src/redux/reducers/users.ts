@@ -77,6 +77,7 @@ export const fetchUsers = (page: number, filter: FilterType): AppThunk => (dispa
         if (!data.error) {
             dispatch(setTotalNumber(data.totalCount))
             dispatch(addUsers(data.items))
+            dispatch(setFilter(filter))
         } else {
             handleServerNetworkError(dispatch, data.error)
         }

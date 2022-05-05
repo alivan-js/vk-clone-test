@@ -48,8 +48,11 @@ const Users: FC = () => {
 
         const query: any = {}
 
-        if (filter.term) query.term = filter.term
-        if (filter.friend !== null) query.friend = String(filter.friend)
+        if (filter.term) {query.term = filter.term}
+        debugger
+        if (filter.friend !== null) {query.friend = String(filter.friend)}
+
+        console.log(query)
 
         setSearchParams({term: query.term ? query.term : "", friend: query.friend ? query.friend : null})
 
