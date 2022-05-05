@@ -92,11 +92,11 @@ export const fetchFollowing = (id: number): AppThunk => (dispatch) => {
     dispatch(setIsLoading(true))
     dispatch(setFollowingProgress({id}))
     usersAPI.follow(id).then((res) => {
-        // @ts-ignore
+        //@ts-ignore
         if (res.resultCode === ResultCode.Success) {
             dispatch(followUser(id))
         } else {
-            // @ts-ignore
+            //@ts-ignore
             handleServerNetworkError(dispatch, res.message)
         }
     }).catch((err: AxiosError) => {
@@ -106,18 +106,17 @@ export const fetchFollowing = (id: number): AppThunk => (dispatch) => {
         dispatch(setIsLoading(false))
     })
 
-    // как сделать альтернативный тип?
 }
 
 export const fetchUnfollowing = (id: number): AppThunk => (dispatch) => {
     dispatch(setIsLoading(true))
     dispatch(setFollowingProgress({id}))
     usersAPI.unfollow(id).then((res) => {
-            // @ts-ignore
+            //@ts-ignore
             if (res.resultCode === ResultCode.Success) {
                 dispatch(followUser(id))
             } else {
-                // @ts-ignore
+                //@ts-ignore
                 handleServerNetworkError(dispatch, res.message)
             }
         }

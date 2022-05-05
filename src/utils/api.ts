@@ -38,7 +38,8 @@ export const authAPI = {
 
 export const profileAPI = {
     getProfileInfo(id: string) {
-        return instance.get<CommonResponseType<ProfileUserInfoType>>(`/profile/${id}`).then((response) => response.data)
+        return instance.get<ProfileUserInfoType>(`/profile/${id}`)
+            .then((response) => response.data)
     },
     getStatus(id: string) {
         return instance.get<string>(`/profile/status/${id}`).then((response) => response.data)
@@ -96,7 +97,7 @@ export type LoginParamsType = {
 }
 
 export type ProfileUserInfoType = {
-    "aboutMe": Nullable<number>
+    "aboutMe": Nullable<string>
     "contacts": ContactsType,
     "lookingForAJob": Nullable<boolean>
     "lookingForAJobDescription": Nullable<string>
@@ -119,7 +120,7 @@ export type ContactsType = {
     "mainLink": Nullable<string>
 }
 
-type userLoginData = {
+export type userLoginData = {
     id: number
     login: string
     email: string

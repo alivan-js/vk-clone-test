@@ -63,8 +63,6 @@ const Users: FC = () => {
         }
     }, [])
 
-    console.log(isFetchedUsers)
-
     useEffect(() => {
         if (!isFetchedUsers) {
             setIsFetchedUsers(true)

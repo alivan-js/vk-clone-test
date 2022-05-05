@@ -3,7 +3,7 @@ import s from "./Profile.module.scss";
 
 type ProfileInfoRowType = {
     title: string
-    value: any
+    value: null | string
 }
 
 const ProfileInfoRow: FC<ProfileInfoRowType> = React.memo(({title, value}) => {

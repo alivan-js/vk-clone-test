@@ -68,7 +68,7 @@ export function profileReducer(state = initialState, action: ProfileActionsType)
 
 export const addPost = (payload: string) => ({type: "PROFILE/POST-ADDED", payload}) as const
 export const likePost = (payload: number) => ({type: "PROFILE/POST-LIKED", payload}) as const
-export const setProfile = (payload: any) => ({type: "PROFILE/PROFILE-SET", payload}) as const
+export const setProfile = (payload: ProfileUserInfoType) => ({type: "PROFILE/PROFILE-SET", payload}) as const
 export const setLoaded = (payload: boolean) => ({type: "PROFILE/LOADING-SET", payload}) as const
 export const setStatus = (status: string | null) => ({type: "PROFILE/STATUS-SET", payload: status}) as const
 export const setStatusLoading = (status: boolean) => ({type: "PROFILE/STATUS-IS-LOADING-SET", payload: status}) as const
@@ -79,9 +79,8 @@ export const clearPosts = () => ({type: "PROFILE/POSTS-CLEARED"}) as const
 
 export const fetchUserData = (id: string): AppThunk => async (dispatch) => {
     dispatch(setIsLoading(true))
-    Promise.all([dispatch(fetchProfileInfo(id)), dispatch(fetchProfileStatus(id))]).then((res) => {
+    Promise.all<[Promise<ProfileUserInfoType>, Promise<Nullable<string>>]>([dispatch(fetchProfileInfo(id)), dispatch(fetchProfileStatus(id))]).then((res) => {
         dispatch(setProfile(res[0]))
-        //@ts-ignore
         dispatch(setStatus(res[1]))
     }).catch((err) => {
         handleServerNetworkError(dispatch, "Some error occurred")
@@ -91,15 +90,18 @@ export const fetchUserData = (id: string): AppThunk => async (dispatch) => {
     })
 }
 
-export const fetchProfileInfo = (id: string): AppThunk => (dispatch) => {
-    return profileAPI.getProfileInfo(id).catch((err: AxiosError) => {
-        handleServerNetworkError(dispatch, err.message)
-    })
+export const fetchProfileInfo = (id: string): AppThunk<Promise<ProfileUserInfoType>> => (dispatch) => {
+    return profileAPI.getProfileInfo(id)
+        .catch((err) => {
+            handleServerNetworkError(dispatch, err.message)
+            return err
+        })
 }
 
-export const fetchProfileStatus = (id: string): AppThunk => (dispatch) => {
-    return profileAPI.getStatus(id).catch((err: AxiosError) => {
+export const fetchProfileStatus = (id: string): AppThunk<Promise<Nullable<string>>> => (dispatch) => {
+    return profileAPI.getStatus(id).catch((err) => {
         handleServerNetworkError(dispatch, err.message)
+        return err
     })
 }
 

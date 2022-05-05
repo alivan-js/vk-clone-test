@@ -1,5 +1,9 @@
 import {AppThunk, Nullable} from "../store";
-import {authAPI, LoginParamsType, ResultCode} from "../../utils/api";
+import {
+    authAPI,
+    LoginParamsType,
+    ResultCode,
+} from "../../utils/api";
 import {handleServerNetworkError} from "../../utils/error";
 import {AxiosError} from "axios";
 import {setIsLoading} from "./app";
@@ -36,7 +40,7 @@ export function authReducer(state = initialState, action: AuthActionsType): Init
 
 // actions
 
-export const setUserData = (payload: any) => ({type: "AUTH/USERDATA-SET", payload}) as const
+export const setUserData = (payload: AuthUserData) => ({type: "AUTH/USERDATA-SET", payload}) as const
 export const setIsLoggedIn = () => ({type: "AUTH/IS-LOGGED-IN-SET"}) as const
 export const setIsLoggedOut = () => ({type: "AUTH/IS-LOGGED-OUT-SET"}) as const
 export const setCaptcha = (url: string) => ({type: "AUTH/CAPTCHA-SET", url}) as const
@@ -78,7 +82,7 @@ export const logoutTC = (): AppThunk => (dispatch) => {
     )
 }
 
-export const authTC = (): AppThunk => (dispatch) => {
+export const authTC = (): AppThunk<Promise<number | void | undefined>> => (dispatch) => {
     dispatch(setIsLoading(true))
     return authAPI.me().then((res) => {
             if (res.data.resultCode === ResultCode.Success) {
@@ -109,6 +113,12 @@ export type AuthActionsType =
     | ReturnType<typeof setIsLoggedIn>
     | ReturnType<typeof setIsLoggedOut>
     | ReturnType<typeof setCaptcha>
+
+export type AuthUserData = {
+    id: Nullable<number>
+    email: Nullable<string>
+    login: Nullable<string>
+}
 
 
 type InitialStateType = typeof initialState

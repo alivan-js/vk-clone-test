@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {useNavigate} from "react-router-dom";
+import userAvatar from "../../assets/img/avatar.jpg"
 
 
 type MessageType = {
@@ -18,7 +19,7 @@ const Message: FC<MessageType> = React.memo(({text, photo, userName, userId}) =>
             <div style={{cursor: "pointer"}} onClick={() => {
                 navigate(`/profile/${userId}`)
             }}>
-                <img className={"header__user_avatar"} src={photo || "/assets/img/avatar.jpg"} alt=""/>
+                <img className={"header__user_avatar"} src={photo || userAvatar} alt="userAvatar"/>
             </div>
             <div>
                 <div><span className={"message-name"}>{userName}</span>

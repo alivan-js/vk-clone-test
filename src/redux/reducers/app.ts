@@ -38,21 +38,19 @@ export const setIsLoading = (status: boolean) => ({type: "APP/IS-LOADING-SET", p
 // thunks
 
 export const initializeAppTC = (): AppThunk => (dispatch) => {
-    Promise.all([dispatch(authTC())]).then(
+    Promise.all<[Promise<number | void | undefined>]>([dispatch(authTC())]).then(
         (value) => {
             dispatch(setInitialized())
             if (value.length) {
-                // @ts-ignore
-                value[0] && dispatch(setUserDataTC(value[0]))
+                value[0] && dispatch(setUserDataTC(value[0].toString()))
             }
         }
     )
 }
 
-export const setUserDataTC = (id: any): AppThunk => async (dispatch) => {
+export const setUserDataTC = (id: string): AppThunk => async (dispatch) => {
     let userData = await profileAPI.getProfileInfo(id)
-    // @ts-ignore
-    dispatch(setUserImg(userData.photos.small))
+    dispatch(setUserImg(userData.photos.small || ""))
 }
 
 // types

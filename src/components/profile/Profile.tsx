@@ -18,6 +18,7 @@ import ProfileInfo from "./ProfileInfo";
 import PostList from "./PostList";
 import ProfilePostInput from "./ProfilePostInput";
 import userAvatar from "../../.././src/assets/img/avatar.jpg"
+import {ProfileUserInfoType} from "../../utils/api";
 
 const Profile = () => {
 
@@ -38,7 +39,7 @@ const Profile = () => {
         }
 
         return () => {
-            dispatch(setProfile({}))
+            dispatch(setProfile({} as ProfileUserInfoType))
             dispatch(setStatus(""))
             dispatch(clearPosts())
             dispatch(setLoaded(false))

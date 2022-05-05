@@ -41,7 +41,7 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
         if (filter) {
             setValue("term", filter.term)
             setValue("friend", friend)
-            }
+        }
     }, [filter]);
 
     return (
