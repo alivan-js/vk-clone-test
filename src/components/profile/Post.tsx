@@ -3,6 +3,8 @@ import {useDispatch} from "react-redux";
 import {likePost} from "../../redux/reducers/profile";
 import s from "./Post.module.scss"
 import {Nullable} from "../../redux/store";
+import like from "../../assets/svg/like.svg"
+import liked from "../../assets/svg/liked.svg"
 
 type PostType = {
     text: string,
@@ -36,8 +38,8 @@ const Post: FC<PostType> = React.memo(({text, likesCount, id, profileName, photo
             </div>
             <div className={s.post__socials}>
                 {clicked
-                    ? <img src={"/assets/svg/liked.svg"} alt="liked" style={{width: "24px", height: "24px"}}/>
-                    : <img onClick={onclickLikeHandler} src="/assets/svg/like.svg" alt="like"
+                    ? <img src={liked} alt="liked" style={{width: "24px", height: "24px"}}/>
+                    : <img onClick={onclickLikeHandler} src={like} alt="like"
                            style={{marginRight: "2px"}}/>
                 }
                 {likesCount}

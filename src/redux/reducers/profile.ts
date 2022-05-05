@@ -1,6 +1,6 @@
 import {profileAPI, ProfileUserInfoType, ResultCode} from "../../utils/api";
 import {AppThunk, Nullable} from "../store";
-import {setIsLoading} from "./app";
+import {setIsLoading, setUserImg} from "./app";
 import {handleServerNetworkError} from "../../utils/error";
 import {AxiosError} from "axios";
 
@@ -127,6 +127,7 @@ export const updatePhotoTC = (photoFile: File): AppThunk => (dispatch) => {
     profileAPI.updatePhoto(photoFile).then((res) => {
         if (res.resultCode === ResultCode.Success) {
             dispatch(setPhoto(res.data.photos))
+                res.data.photos.small && dispatch(setUserImg(res.data.photos.small))
         } else {
             handleServerNetworkError(dispatch, res.messages[0])
         }
