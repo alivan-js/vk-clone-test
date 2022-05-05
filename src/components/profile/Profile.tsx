@@ -73,9 +73,9 @@ const Profile = () => {
                 <div className={s.first__column__info}>
                     {isOwner
                         ? <label htmlFor="changeImg"><img
-                            src={photoProfile?.large || userAvatar} alt=""
+                            src={photoProfile?.large || userAvatar} alt="userLogo"
                             className={s.first__column__info__img}/></label>
-                        : <img src={photoProfile?.large || userAvatar} alt=""
+                        : <img src={photoProfile?.large || userAvatar} alt="userLogo"
                                className={s.first__column__info__img_1}/>
                     }
                     {isOwner &&

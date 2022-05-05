@@ -37,7 +37,7 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
     )
 
     useEffect(() => {
-        const friend = filter.friend === null ? "" : JSON.stringify(filter.friend)
+        const friend = filter.friend === null ? "null" : JSON.stringify(filter.friend)
         if (filter) {
             setValue("term", filter.term)
             setValue("friend", friend)
