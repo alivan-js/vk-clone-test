@@ -113,6 +113,7 @@
       font-size: 15px;
       line-height: 17px;
       color: #3D6083;
+      word-break: break-word;
     }
   }
 }
@@ -169,6 +170,7 @@
   justify-content: center;
   align-items: center;
   padding: 27px 180px 57px;
+
   span {
     width: 150px;
     text-align: center;
@@ -192,13 +194,13 @@
         display: none;
       }
 
-      label{
+      label {
         display: flex;
         justify-content: center;
       }
 
       button {
-       width: 270px;
+        width: 270px;
         margin: 0 auto;
       }
     }
@@ -211,7 +213,6 @@
     margin: 0 auto;
     margin-bottom: 15px;
   }
-
 
   .description {
     display: flex;
