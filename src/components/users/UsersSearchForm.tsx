@@ -2,6 +2,7 @@ import React, {FC, useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {Nullable} from "../../redux/store";
 import {FilterType} from "../../redux/reducers/users";
+import s from "./Users.module.scss"
 
 type UsersSearchFormType = {
     filter: {
@@ -46,14 +47,7 @@ export const UsersSearchForm: FC<UsersSearchFormType> = React.memo(({filter, cha
 
     return (
         <form onSubmit={onSubmit}>
-            <div style={{
-                backgroundColor: "white",
-                height: "50px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "0 200px"
-            }}>
+            <div className={s.form}>
                 <input
                     placeholder={"Введите имя пользователя"}
                     {...register("term")}

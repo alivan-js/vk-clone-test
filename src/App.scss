@@ -263,3 +263,23 @@
   left: 0;
   width: 100%;
 }
+
+
+@media (max-width: 480px) {
+  .content {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .navigation{
+    margin-right: 0;
+    padding: 0 10px;
+    min-height: 30px;
+  }
+
+  .navigation ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
